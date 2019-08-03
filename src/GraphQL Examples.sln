@@ -11,8 +11,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NHLStats.Data", "NHLStats.D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{231E7EC1-B4A9-4DB1-B21C-8D8ED136A1DC}"
 	ProjectSection(SolutionItems) = preProject
-		readme.md = readme.md
+		..\README.md = ..\README.md
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NHLStats", "NHLStats", "{46308B70-C023-4C7E-A8D9-6645AEC8E3D0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyHotel", "MyHotel", "{F7B572EE-4587-48B6-867E-25DB182E7A44}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHotel", "MyHotel\MyHotel.csproj", "{4D63A398-0B81-4B52-9F9D-86DE2A57873C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,9 +38,19 @@ Global
 		{BFC5C5AF-26AA-4E41-85D5-37F23AE713A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFC5C5AF-26AA-4E41-85D5-37F23AE713A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFC5C5AF-26AA-4E41-85D5-37F23AE713A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D63A398-0B81-4B52-9F9D-86DE2A57873C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D63A398-0B81-4B52-9F9D-86DE2A57873C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D63A398-0B81-4B52-9F9D-86DE2A57873C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D63A398-0B81-4B52-9F9D-86DE2A57873C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2988F8C6-0F4F-419B-911B-B69515A7800D} = {46308B70-C023-4C7E-A8D9-6645AEC8E3D0}
+		{E66B37D4-082D-42FC-A049-A1B183E18A2D} = {46308B70-C023-4C7E-A8D9-6645AEC8E3D0}
+		{BFC5C5AF-26AA-4E41-85D5-37F23AE713A6} = {46308B70-C023-4C7E-A8D9-6645AEC8E3D0}
+		{4D63A398-0B81-4B52-9F9D-86DE2A57873C} = {F7B572EE-4587-48B6-867E-25DB182E7A44}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C9F3067-8D49-47A5-B5D1-5C7FA8527166}
