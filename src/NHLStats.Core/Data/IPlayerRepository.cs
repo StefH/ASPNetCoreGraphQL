@@ -11,7 +11,7 @@ namespace NHLStats.Core.Data
 
         Task<Player> GetByName(string name);
 
-        Task<Player> GetByDynamic(object name);
+        Task<Player> GetByDynamic(string name);
 
         Task<Player> GetRandom();
 

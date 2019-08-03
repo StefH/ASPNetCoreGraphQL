@@ -1,8 +1,7 @@
-﻿
- 
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NHLStats.Core.Data;
@@ -29,9 +28,9 @@ namespace NHLStats.Data.Repositories
             return await _db.Players.FirstOrDefaultAsync(p => p.Name == name);
         }
 
-        public async Task<Player> GetByDynamic(object value)
+        public async Task<Player> GetByDynamic(string name)
         {
-            return await _db.Players.FirstOrDefaultAsync(p => p.Name == name);
+            return await _db.Players.AsQueryable().Where("Name = @0", name).FirstOrDefaultAsync();
         }
 
         public async Task<Player> GetRandom()
