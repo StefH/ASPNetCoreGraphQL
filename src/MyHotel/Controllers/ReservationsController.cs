@@ -36,10 +36,10 @@ namespace MyHotel.Controllers
             switch (clientType)
             {
                 case ClientType.NativeHttp:
-                    return await GetViaHttpGraphqlClient(); /*(Way:1) Native Http Client */
+                    return await GetViaHttpGraphqlClient(); /* (Way:1) Native Http Client */
 
                 case ClientType.CustomGraphQlClient:
-                    return await GetViaCustomGraphqlClient(); /*(Way:2) GraphQl.Client Library*/
+                    return await GetViaCustomGraphqlClient(); /* (Way:2) GraphQl.Client Library */
             }
 
             throw new NotSupportedException();
