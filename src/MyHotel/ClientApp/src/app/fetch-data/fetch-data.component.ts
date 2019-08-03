@@ -16,9 +16,6 @@ export class FetchDataComponent {
     this.baseUrl = baseUrl;
   }
 
-
-
-
   //////////////////////////   (1)   ////////////////////////////
   fetchFromRestApi(): any {
     this.http.get<Reservation[]>(this.baseUrl + 'api/Reservations/List').subscribe(result => {
@@ -27,11 +24,20 @@ export class FetchDataComponent {
     }, error => console.error(error));
   }
 
-  //////////////////////////   (2)   ////////////////////////////
-  fetchFromGraphQlClient(): any {
-    this.http.get<Reservation[]>(this.baseUrl + 'api/Reservations/ListFromGraphql').subscribe(result => {
+  //////////////////////////   (2a)   ////////////////////////////
+  fetchFromGraphQlClientViaNativeHttp(): any {
+    this.http.get<Reservation[]>(this.baseUrl + 'api/Reservations/ListFromGraphql?clientType=0').subscribe(result => {
       this.reservations = result;
-      this.fetchSource = "(2) .NET GraphQL Client";
+      this.fetchSource = "(2a) .NET Native Http GraphQL Client";
+    },
+      error => console.error(error));
+  }
+
+  //////////////////////////   (2b)   ////////////////////////////
+  fetchFromGraphQlClientViaCustomGraphQl(): any {
+    this.http.get<Reservation[]>(this.baseUrl + 'api/Reservations/ListFromGraphql?clientType=1').subscribe(result => {
+      this.reservations = result;
+      this.fetchSource = "(2b) .NET CustomGraphQl Client";
     },
       error => console.error(error));
   }
@@ -60,17 +66,17 @@ export class FetchDataComponent {
 
 
   //////////////////////////   (4)   ////////////////////////////
-    fetchUsingVanillaJs(): any {
+  fetchUsingVanillaJs(): any {
     fetch('/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          query: 'query reservation {reservations {checkinDate guest  {name} room {name}}}'
-        })
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        query: 'query reservation {reservations {checkinDate guest  {name} room {name}}}'
       })
+    })
       .then(r => r.json())
       .then(response => {
         this.reservations = response.data.reservations;
@@ -101,7 +107,7 @@ query reservation {
     }
   }
 }`;
-     
+
     client.query({
       query: query
     }).then(result => {

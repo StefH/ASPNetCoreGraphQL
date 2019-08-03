@@ -30,7 +30,8 @@ query reservation {
       name
     }
     room {
-      name
+      name,
+      number
     }
   }
 }

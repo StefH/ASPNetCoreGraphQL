@@ -1,9 +1,10 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyHotel.GraphQL.Client;
 using MyHotel.Models;
 using MyHotel.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyHotel.Controllers
 {
@@ -30,13 +31,18 @@ namespace MyHotel.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<List<ReservationModel>> ListFromGraphql()
+        public async Task<List<ReservationModel>> ListFromGraphql(ClientType clientType)
         {
-            /*(Way:1) Native Http Client */
-            return await GetViaHttpGraphqlClient();
+            switch (clientType)
+            {
+                case ClientType.NativeHttp:
+                    return await GetViaHttpGraphqlClient(); /*(Way:1) Native Http Client */
 
-            /*(Way:2) GraphQl.Client Library*/
-            //   return await GetViaGraphqlClient();
+                case ClientType.CustomGraphQlClient:
+                    return await GetViaCustomGraphqlClient(); /*(Way:2) GraphQl.Client Library*/
+            }
+
+            throw new NotSupportedException();
         }
 
         private async Task<List<ReservationModel>> GetViaHttpGraphqlClient()
@@ -46,11 +52,10 @@ namespace MyHotel.Controllers
             return response.Data.Reservations;
         }
 
-        private async Task<List<ReservationModel>> GetViaGraphqlClient()
+        private async Task<List<ReservationModel>> GetViaCustomGraphqlClient()
         {
             var reservations = await _graphqlClient.GetReservationsAsync();
             return reservations;
         }
-
     }
 }

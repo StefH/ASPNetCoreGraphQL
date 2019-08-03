@@ -24,7 +24,8 @@ namespace MyHotel.GraphQL.Client
                   name
                 }
                 room {
-                  name
+                  name,
+                  number
                 }
               }
             }");

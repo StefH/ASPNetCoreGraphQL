@@ -6,8 +6,12 @@
     (1) Fetch From Old School RestAPI
   </button>
 
-  <button class="mb-3 ml-3" (click)="fetchFromGraphQlClient()" type="button">
-    (2) Fetch From .NET GraphQL Client
+  <button class="mb-3 ml-3" (click)="fetchFromGraphQlClientViaNativeHttp()" type="button">
+    (2a) .NET Native Http GraphQL Client
+  </button>
+
+  <button class="mb-3 ml-3" (click)="fetchFromGraphQlClientViaCustomGraphQl()" type="button">
+    (2b) .NET CustomGraphQl Client
   </button>
 
   <button class="mb-3 ml-3" (click)="fetchDirectlyFromGraphQl()" type="button">
