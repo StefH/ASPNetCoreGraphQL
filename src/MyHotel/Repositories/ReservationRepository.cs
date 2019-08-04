@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper.QueryableExtensions;
+﻿using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using MyHotel.Entities;
 using MyHotel.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyHotel.Repositories
 {
@@ -28,6 +28,7 @@ namespace MyHotel.Repositories
             return await _myHotelDbContext
                 .Reservations
                 .Include(x => x.Room)
+                .Include(x => x.Room.RoomDetail)
                 .Include(x => x.Guest)
                 .ToListAsync();
         }
@@ -40,9 +41,16 @@ namespace MyHotel.Repositories
         public IIncludableQueryable<Reservation, Guest> GetQuery()
         {
             return _myHotelDbContext
-                 .Reservations
-                 .Include(x => x.Room)
-                 .Include(x => x.Guest);
+                .Reservations
+                .Include(x => x.Room)
+                .Include(x => x.Room.RoomDetail)
+                .Include(x => x.Guest);
+        }
+
+        public IIncludableQueryable<Room, RoomDetail> GetRoomQuery()
+        {
+            return _myHotelDbContext.Rooms
+                .Include(x => x.RoomDetail);
         }
     }
 }

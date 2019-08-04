@@ -13,5 +13,7 @@ namespace MyHotel.Models
         public RoomStatus Status { get; set; }
 
         public bool AllowedSmoking { get; set; }
+
+        public RoomDetailModel Detail { get; set; }
     }
 }

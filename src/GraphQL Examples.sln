@@ -17,6 +17,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NHLStats", "NHLStats", "{46308B70-C023-4C7E-A8D9-6645AEC8E3D0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyHotel", "MyHotel", "{F7B572EE-4587-48B6-867E-25DB182E7A44}"
+	ProjectSection(SolutionItems) = preProject
+		Example Queries.txt = Example Queries.txt
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHotel", "MyHotel\MyHotel.csproj", "{4D63A398-0B81-4B52-9F9D-86DE2A57873C}"
 EndProject

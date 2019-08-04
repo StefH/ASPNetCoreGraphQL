@@ -7,7 +7,7 @@ namespace MyHotel.GraphQL
     {
         public MyHotelSchema(IDependencyResolver resolver) : base(resolver)
         {
-            Query = resolver.Resolve<ReservationQuery>();
+            Query = resolver.Resolve<MyHotelQuery>();
         }
     }
 }

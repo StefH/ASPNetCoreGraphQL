@@ -1,4 +1,3 @@
-using System;
 using AutoMapper;
 using GraphQL;
 using GraphQL.Client;
@@ -17,6 +16,8 @@ using MyHotel.GraphQL;
 using MyHotel.GraphQL.Client;
 using MyHotel.Models;
 using MyHotel.Repositories;
+using System;
+using MyHotel.AutoMapper;
 
 namespace MyHotel
 {
@@ -32,12 +33,15 @@ namespace MyHotel
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //***< My services >*** 
             services.AddHttpClient<ReservationHttpGraphqlClient>(x => x.BaseAddress = new Uri(Configuration["GraphQlEndpoint"]));
             services.AddSingleton(t => new GraphQLClient(Configuration["GraphQlEndpoint"]));
             services.AddSingleton<ReservationGraphqlClient>();
+            services.AddScoped<IAutoMapperPropertyNameResolver, AutoMapperPropertyNameResolver>();
             //***</ My services >*** 
 
             // In production, the Angular files will be served from this directory
@@ -51,8 +55,7 @@ namespace MyHotel
             services.AddTransient<ReservationRepository>();
 
             //***< GraphQL Services >*** 
-            services.AddScoped<IDependencyResolver>(x =>
-                new FuncDependencyResolver(x.GetRequiredService));
+            services.AddScoped<IDependencyResolver>(x => new FuncDependencyResolver(x.GetRequiredService));
 
             services.AddScoped<MyHotelSchema>();
 
@@ -68,8 +71,10 @@ namespace MyHotel
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, MyHotelDbContext dbContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, MyHotelDbContext dbContext, IMapper mapper)
         {
+            mapper.ConfigurationProvider.AssertConfigurationIsValid();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -102,18 +107,6 @@ namespace MyHotel
                 {
                     spa.UseAngularCliServer(npmScript: "start");
                 }
-            });
-
-            InitializeMapper();
-        }
-
-        private static void InitializeMapper()
-        {
-            Mapper.Initialize(x =>
-            {
-                x.CreateMap<Guest, GuestModel>();
-                x.CreateMap<Room, RoomModel>();
-                x.CreateMap<Reservation, ReservationModel>();
             });
         }
     }

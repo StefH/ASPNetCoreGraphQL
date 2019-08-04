@@ -1,9 +1,10 @@
 ﻿using GraphQL.Types;
 using MyHotel.Entities;
+using MyHotel.Models;
 
 namespace MyHotel.GraphQL.Types
 {
-    public class ReservationType : ObjectGraphType<Reservation>
+    public class ReservationType : ObjectGraphType<ReservationModel>
     {
         public ReservationType()
         {

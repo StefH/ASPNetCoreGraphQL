@@ -1,13 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MyHotel.Entities;
+using System;
 
 namespace MyHotel.EntityFrameworkCore
 {
     public class MyHotelDbContext : DbContext
     {
-        //public static string DbConnectionString = "Server=localhost; Database=MyHotelDb; Trusted_Connection=True;";
-
         public MyHotelDbContext(DbContextOptions<MyHotelDbContext> options)
             : base(options)
         { }
@@ -18,6 +16,8 @@ namespace MyHotel.EntityFrameworkCore
 
         public DbSet<Room> Rooms { get; set; }
 
+        public DbSet<RoomDetail> RoomDetails { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //GUESTS
@@ -25,16 +25,21 @@ namespace MyHotel.EntityFrameworkCore
             modelBuilder.Entity<Guest>().HasData(new Guest("George Michael", DateTime.Now.AddDays(-5)) { Id = 2 });
             modelBuilder.Entity<Guest>().HasData(new Guest("Daft Punk", DateTime.Now.AddDays(-1)) { Id = 3 });
 
+            //ROOMDETAILS
+            modelBuilder.Entity<RoomDetail>().HasData(new RoomDetail(2, 1) { Id = 100 });
+            modelBuilder.Entity<RoomDetail>().HasData(new RoomDetail(4, 1) { Id = 101 });
+            modelBuilder.Entity<RoomDetail>().HasData(new RoomDetail(3, 2) { Id = 102 });
+            modelBuilder.Entity<RoomDetail>().HasData(new RoomDetail(0, 2) { Id = 103 });
+
             //ROOMS
-            modelBuilder.Entity<Room>().HasData(new Room(101, "yellow-room", RoomStatus.Available, false) { Id = 1 });
-            modelBuilder.Entity<Room>().HasData(new Room(102, "blue-room", RoomStatus.Available, false) { Id = 2 });
-            modelBuilder.Entity<Room>().HasData(new Room(103, "white-room", RoomStatus.Unavailable, false) { Id = 3 });
-            modelBuilder.Entity<Room>().HasData(new Room(104, "black-room", RoomStatus.Unavailable, false) { Id = 4 });
+            modelBuilder.Entity<Room>().HasData(new Room(101, "yellow-room", RoomStatus.Available, false, 100) { Id = 1 });
+            modelBuilder.Entity<Room>().HasData(new Room(102, "blue-room", RoomStatus.Available, false, 101) { Id = 2 });
+            modelBuilder.Entity<Room>().HasData(new Room(103, "white-room", RoomStatus.Unavailable, false, 102) { Id = 3 });
+            modelBuilder.Entity<Room>().HasData(new Room(104, "black-room", RoomStatus.Unavailable, false, 103) { Id = 4 });
 
             //RESERVATIONS
             modelBuilder.Entity<Reservation>().HasData(new Reservation(DateTime.Now.AddDays(-2), DateTime.Now.AddDays(3), 3, 1) { Id = 1 });
             modelBuilder.Entity<Reservation>().HasData(new Reservation(DateTime.Now.AddDays(-1), DateTime.Now.AddDays(4), 4, 2) { Id = 2 });
-
 
             base.OnModelCreating(modelBuilder);
         }

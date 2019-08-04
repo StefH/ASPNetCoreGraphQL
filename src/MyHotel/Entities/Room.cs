@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyHotel.Entities
 {
@@ -18,16 +19,23 @@ namespace MyHotel.Entities
 
         public bool AllowedSmoking { get; set; }
 
+        [ForeignKey("RoomDetailId")]
+        public RoomDetail RoomDetail { get; set; }
+
+        public int? RoomDetailId { get; set; }
+
         public Room()
         {
             
         }
-        public Room(int number, string name, RoomStatus status, bool allowedSmoking)
+
+        public Room(int number, string name, RoomStatus status, bool allowedSmoking, int roomDetailId)
         {
             Number = number;
             Name = name;
             Status = status;
             AllowedSmoking = allowedSmoking;
+            RoomDetailId = roomDetailId;
         }
     }
 }

@@ -1,0 +1,44 @@
+query {
+  reservations(roomAllowedSmoking: true, roomBeds: 2) {
+    checkinDate
+    guest {
+      name
+    }
+    room {
+      name
+      number,
+      status,
+      detail {
+        beds,
+        windows
+      }
+    }
+  }
+}
+
+
+query {
+  rooms {
+    name
+    number,
+    status,
+    detail {
+      beds,
+      windows
+    }
+  }
+}
+
+
+query {
+  rooms (detailBeds: 2) {
+    name
+    number,
+    status,
+    detail {
+      identifier
+      beds,
+      windows
+    }
+  }
+}
