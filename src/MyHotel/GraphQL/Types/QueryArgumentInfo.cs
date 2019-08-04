@@ -7,11 +7,7 @@ namespace MyHotel.GraphQL.Types
     {
         public QueryArgument QueryArgument { get; set; }
 
-        //public Type ParentModel { get; set; }
-
-        //public Type Model { get; set; }
-
-        //public string ModelPropertyName { get; set; }
+        public string GraphPropertyPath { get; set; }
 
         public string EntityPropertyPath { get; set; }
     }
