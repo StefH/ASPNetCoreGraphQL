@@ -24,17 +24,17 @@ namespace MyHotel.AutoMapper
         private void Init(IMapper mapper)
         {
             var allTypeMaps = mapper.ConfigurationProvider.GetAllTypeMaps();
-            foreach (TypeMap map in allTypeMaps)
+            foreach (var typeMap in allTypeMaps)
             {
-                foreach (PropertyMap propertyMap in map.PropertyMaps.Where(pm => pm.CustomMapExpression == null))
+                foreach (var propertyMap in typeMap.PropertyMaps.Where(pm => pm.CustomMapExpression == null))
                 {
                     string destinationPropertyName = propertyMap.DestinationName;
                     string sourcePath = propertyMap.SourceMember?.Name;
 
-                    _mappings.Add((map.DestinationType, destinationPropertyName), sourcePath);
+                    _mappings.Add((typeMap.DestinationType, destinationPropertyName), sourcePath);
                 }
 
-                foreach (PropertyMap propertyMap in map.PropertyMaps.Where(pm => pm.CustomMapExpression != null))
+                foreach (var propertyMap in typeMap.PropertyMaps.Where(pm => pm.CustomMapExpression != null))
                 {
                     string body = propertyMap.CustomMapExpression.Body.ToString();
                     string tag = propertyMap.CustomMapExpression.Parameters[0].Name;
@@ -42,7 +42,7 @@ namespace MyHotel.AutoMapper
                     string destinationPropertyName = propertyMap.DestinationName;
                     string sourcePath = body.Replace($"{tag}.", string.Empty);
 
-                    _mappings.Add((map.DestinationType, destinationPropertyName), sourcePath);
+                    _mappings.Add((typeMap.DestinationType, destinationPropertyName), sourcePath);
                 }
             }
         }

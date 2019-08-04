@@ -23,12 +23,12 @@ namespace MyHotel.GraphQL
         private ICollection<QueryArgumentInfo> PopulateQueryArgumentInfoList(Type type, Type parentType = null, string graphParentName = "", string parentEntityPath = "")
         {
             var list = new List<QueryArgumentInfo>();
-            if (!(Activator.CreateInstance(type) is IComplexGraphType instance))
+            if (!(Activator.CreateInstance(type) is IComplexGraphType complexGraphInstance))
             {
                 return list;
             }
 
-            instance.Fields.ToList().ForEach(ft =>
+            complexGraphInstance.Fields.ToList().ForEach(ft =>
             {
                 Type graphType = ft.Type.GraphType();
                 Type parentModel = parentType?.ModelType();
