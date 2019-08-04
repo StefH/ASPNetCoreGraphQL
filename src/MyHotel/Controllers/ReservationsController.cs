@@ -11,15 +11,15 @@ namespace MyHotel.Controllers
     [Route("api/[controller]")]
     public class ReservationsController : Controller
     {
-        private readonly ReservationRepository _reservationRepository;
+        private readonly MyHotelRepository _myHotelRepository;
         private readonly ReservationHttpGraphqlClient _httpGraphqlClient;
         private readonly ReservationGraphqlClient _graphqlClient;
 
-        public ReservationsController(ReservationRepository reservationRepository,
+        public ReservationsController(MyHotelRepository myHotelRepository,
             ReservationHttpGraphqlClient httpGraphqlClient,
             ReservationGraphqlClient graphqlClient)
         {
-            _reservationRepository = reservationRepository;
+            _myHotelRepository = myHotelRepository;
             _httpGraphqlClient = httpGraphqlClient;
             _graphqlClient = graphqlClient;
         }
@@ -27,7 +27,7 @@ namespace MyHotel.Controllers
         [HttpGet("[action]")]
         public async Task<List<ReservationModel>> List()
         {
-            return await _reservationRepository.GetAll<ReservationModel>();
+            return await _myHotelRepository.GetAll<ReservationModel>();
         }
 
         [HttpGet("[action]")]

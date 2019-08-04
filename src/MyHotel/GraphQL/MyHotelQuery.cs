@@ -58,14 +58,14 @@ namespace MyHotel.GraphQL
             return list;
         }
 
-        public MyHotelQuery(ReservationRepository reservationRepository, IAutoMapperPropertyNameResolver autoMapperPropertyNameResolver, IMapper mapper)
+        public MyHotelQuery(MyHotelRepository myHotelRepository, IAutoMapperPropertyNameResolver autoMapperPropertyNameResolver, IMapper mapper)
         {
             _autoMapperPropertyNameResolver = autoMapperPropertyNameResolver;
 
             var roomQueryArgumentList = PopulateQueryArgumentInfoList(typeof(RoomType));
             Field<ListGraphType<RoomType>>("rooms",
                 arguments: new QueryArguments(roomQueryArgumentList.Select(q => q.QueryArgument)),
-                resolve: context => reservationRepository
+                resolve: context => myHotelRepository
                     .GetRoomsQuery()
                     .ApplyQueryArguments(roomQueryArgumentList, context.Arguments)
                     .ProjectTo<RoomModel>(mapper.ConfigurationProvider)
@@ -75,7 +75,7 @@ namespace MyHotel.GraphQL
             var flatRoomQueryArgumentList = PopulateQueryArgumentInfoList(typeof(FlatRoomType));
             Field<ListGraphType<FlatRoomType>>("flatrooms",
                 arguments: new QueryArguments(flatRoomQueryArgumentList.Select(q => q.QueryArgument)),
-                resolve: context => reservationRepository
+                resolve: context => myHotelRepository
                     .GetRoomsQuery()
                     .ApplyQueryArguments(flatRoomQueryArgumentList, context.Arguments)
                     .ProjectTo<FlatRoomModel>(mapper.ConfigurationProvider)
@@ -85,7 +85,7 @@ namespace MyHotel.GraphQL
             var reservationQueryArgumentList = PopulateQueryArgumentInfoList(typeof(ReservationType));
             Field<ListGraphType<ReservationType>>("reservations",
                 arguments: new QueryArguments(reservationQueryArgumentList.Select(q => q.QueryArgument)),
-                resolve: context => reservationRepository
+                resolve: context => myHotelRepository
                     .GetReservationsQuery()
                     .ApplyQueryArguments(reservationQueryArgumentList, context.Arguments)
                     .ProjectTo<ReservationModel>(mapper.ConfigurationProvider)
@@ -126,7 +126,7 @@ namespace MyHotel.GraphQL
                 }),
                 resolve: context =>
                 {
-                    var query = reservationRepository.GetReservationsQuery().AsQueryable();
+                    var query = myHotelRepository.GetReservationsQuery().AsQueryable();
 
                     Console.WriteLine("context.Arguments = " + JsonConvert.SerializeObject(context.Arguments));
 

@@ -1,5 +1,5 @@
 query {
-  reservations(roomAllowedSmoking: true, roomBeds: 2) {
+  reservations(roomAllowedSmoking: true, roomDetailBeds: 2) {
     checkinDate
     guest {
       name

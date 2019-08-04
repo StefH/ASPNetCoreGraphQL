@@ -8,7 +8,9 @@ namespace MyHotel.EntityFrameworkCore
     {
         public MyHotelDbContext(DbContextOptions<MyHotelDbContext> options)
             : base(options)
-        { }
+        {
+            // this.ChangeTracker.LazyLoadingEnabled = false;
+        }
 
         public DbSet<Reservation> Reservations { get; set; }
 

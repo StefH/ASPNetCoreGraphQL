@@ -52,7 +52,7 @@ namespace MyHotel
 
             services.AddDbContext<MyHotelDbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:MyHotelDb"]));
 
-            services.AddTransient<ReservationRepository>();
+            services.AddTransient<MyHotelRepository>();
 
             //***< GraphQL Services >*** 
             services.AddScoped<IDependencyResolver>(x => new FuncDependencyResolver(x.GetRequiredService));
