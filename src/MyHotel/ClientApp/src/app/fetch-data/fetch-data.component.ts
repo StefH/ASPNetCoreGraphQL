@@ -52,6 +52,7 @@ export class FetchDataComponent {
                           name
                         }
                         room {
+                          number
                           name
                         }
                       }
@@ -74,7 +75,7 @@ export class FetchDataComponent {
         'Accept': 'application/json',
       },
       body: JSON.stringify({
-        query: 'query reservation {reservations {checkinDate guest  {name} room {name}}}'
+        query: 'query reservation {reservations {checkinDate guest  {name} room {number name}}}'
       })
     })
       .then(r => r.json())
@@ -103,6 +104,7 @@ query reservation {
       name
     }
     room {
+      number
       name
     }
   }

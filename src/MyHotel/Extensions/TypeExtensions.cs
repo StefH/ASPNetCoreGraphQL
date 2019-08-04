@@ -11,17 +11,9 @@ namespace MyHotel.Extensions
             return type.BaseType == typeof(NonNullGraphType) ? type.GetGenericArguments().First() : type;
         }
 
-        public static bool TryGetObjectGraphType(this Type type, out Type objectGraphType)
+        public static bool IsObjectGraphType(this Type type)
         {
-            objectGraphType = null;
-
-            if (type.BaseType != null && type.BaseType.Name == "ObjectGraphType`1")
-            {
-                objectGraphType = type;
-                return true;
-            }
-
-            return false;
+            return type.BaseType != null && type.BaseType.Name == "ObjectGraphType`1";
         }
 
         public static Type ModelType(this Type type)

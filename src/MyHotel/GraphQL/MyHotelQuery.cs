@@ -30,14 +30,13 @@ namespace MyHotel.GraphQL
 
             instance.Fields.ToList().ForEach(ft =>
             {
-                if (ft.Type.GraphType().TryGetObjectGraphType(out Type objectGraphType))
+                Type graphType = ft.Type.GraphType();
+                if (graphType.IsObjectGraphType())
                 {
-                    Loop(objectGraphType, type, ft.Name, list);
+                    Loop(graphType, type, ft.Name, list);
                 }
                 else
                 {
-                    Type graphType = ft.Type.GraphType();
-
                     Type parentModel = parentType?.ModelType();
                     string resolvedParentPrefix = _autoMapperPropertyNameResolver.Resolve(parentModel, graphParentName);
 
@@ -63,7 +62,7 @@ namespace MyHotel.GraphQL
                 arguments: new QueryArguments(roomQueryArgumentList.Select(q => q.QueryArgument)),
                 resolve: context =>
                 {
-                    IQueryable query = reservationRepository.GetRoomQuery().AsQueryable();
+                    IQueryable query = reservationRepository.GetRoomsQuery().AsQueryable();
 
                     Console.WriteLine("rooms: context.Arguments = " + JsonConvert.SerializeObject(context.Arguments));
 
@@ -115,7 +114,7 @@ namespace MyHotel.GraphQL
                 }),
                 resolve: context =>
                 {
-                    var query = reservationRepository.GetQuery().AsQueryable();
+                    var query = reservationRepository.GetReservationsQuery().AsQueryable();
 
                     Console.WriteLine("context.Arguments = " + JsonConvert.SerializeObject(context.Arguments));
 
