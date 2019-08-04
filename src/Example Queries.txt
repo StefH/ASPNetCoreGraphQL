@@ -6,10 +6,10 @@ query {
     }
     room {
       name
-      number,
-      status,
+      number
+      status
       detail {
-        beds,
+        beds
         windows
       }
     }
@@ -20,10 +20,10 @@ query {
 query {
   rooms {
     name
-    number,
-    status,
+    number
+    status
     detail {
-      beds,
+      beds
       windows
     }
   }
@@ -33,12 +33,23 @@ query {
 query {
   rooms (detailBeds: 2) {
     name
-    number,
-    status,
+    number
+    status
     detail {
       identifier
-      beds,
+      beds
       windows
     }
   }
 }
+
+query {
+  flatrooms(beds: 2) {
+    name
+    number
+    status
+    beds
+    windows
+  }
+}
+

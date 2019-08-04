@@ -9,11 +9,21 @@ namespace MyHotel.AutoMapper
         public MyHotelProfile()
         {
             CreateMap<Guest, GuestModel>();
+
             CreateMap<Room, RoomModel>()
-                .ForMember(m => m.Detail, opt => opt.MapFrom(e => e.RoomDetail));
+                .ForMember(m => m.Detail, opt => opt.MapFrom(e => e.RoomDetail))
+            ;
+
             CreateMap<RoomDetail, RoomDetailModel>()
-                .ForMember(m => m.Identifier, opt => opt.MapFrom(e => e.Id));
+                .ForMember(m => m.Identifier, opt => opt.MapFrom(e => e.Id))
+            ;
+
             CreateMap<Reservation, ReservationModel>();
+
+            CreateMap<Room, FlatRoomModel>()
+                .ForMember(m => m.Beds, opt => opt.MapFrom(e => e.RoomDetail.Beds))
+                .ForMember(m => m.Windows, opt => opt.MapFrom(e => e.RoomDetail.Windows))
+            ;
         }
     }
 }

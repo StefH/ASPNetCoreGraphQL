@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using JetBrains.Annotations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MyHotel.AutoMapper
 {
@@ -25,15 +26,23 @@ namespace MyHotel.AutoMapper
             var allTypeMaps = mapper.ConfigurationProvider.GetAllTypeMaps();
             foreach (TypeMap map in allTypeMaps)
             {
-                var propertyMaps = map.PropertyMaps;
-
-                foreach (PropertyMap propertyMap in propertyMaps)
+                foreach (PropertyMap propertyMap in map.PropertyMaps.Where(pm => pm.CustomMapExpression == null))
                 {
-                    string destinationName = propertyMap.DestinationName;
-                    string modelMemberName = propertyMap.SourceMember?.Name;
+                    string destinationPropertyName = propertyMap.DestinationName;
+                    string sourcePath = propertyMap.SourceMember?.Name;
 
-                    (Type, string) key = (map.DestinationType, destinationName);
-                    _mappings.Add(key, modelMemberName);
+                    _mappings.Add((map.DestinationType, destinationPropertyName), sourcePath);
+                }
+
+                foreach (PropertyMap propertyMap in map.PropertyMaps.Where(pm => pm.CustomMapExpression != null))
+                {
+                    string body = propertyMap.CustomMapExpression.Body.ToString();
+                    string tag = propertyMap.CustomMapExpression.Parameters[0].Name;
+
+                    string destinationPropertyName = propertyMap.DestinationName;
+                    string sourcePath = body.Replace($"{tag}.", string.Empty);
+
+                    _mappings.Add((map.DestinationType, destinationPropertyName), sourcePath);
                 }
             }
         }
@@ -43,7 +52,7 @@ namespace MyHotel.AutoMapper
             (Type, string) key = (type, propertyName);
 
             // Not found in dictionary, just return propertyName or null.
-            return _mappings.ContainsKey(key) ? _mappings[key] : propertyName;
+            return _mappings.ContainsKey((type, propertyName)) ? _mappings[key] : propertyName;
         }
     }
 }

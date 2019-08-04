@@ -12,7 +12,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic.Core;
 using System.Security.Claims;
 
 namespace MyHotel.GraphQL
@@ -21,66 +20,79 @@ namespace MyHotel.GraphQL
     {
         private readonly IAutoMapperPropertyNameResolver _autoMapperPropertyNameResolver;
 
-        private void Loop(Type type, Type parentType, string graphParentName, IList<QueryArgumentInfo> list)
+        private ICollection<QueryArgumentInfo> PopulateQueryArgumentInfoList(Type type, Type parentType = null, string graphParentName = "", string parentEntityPath = "")
         {
+            var list = new List<QueryArgumentInfo>();
             if (!(Activator.CreateInstance(type) is IComplexGraphType instance))
             {
-                return;
+                return list;
             }
 
             instance.Fields.ToList().ForEach(ft =>
             {
                 Type graphType = ft.Type.GraphType();
+                Type parentModel = parentType?.ModelType();
+
+                string resolvedParentPath = _autoMapperPropertyNameResolver.Resolve(parentModel, graphParentName);
+
+                string name = $"{graphParentName}{ft.Name}";
+                string entityPath = !string.IsNullOrEmpty(parentEntityPath) ? $"{parentEntityPath}.{resolvedParentPath}" : resolvedParentPath;
+
                 if (graphType.IsObjectGraphType())
                 {
-                    Loop(graphType, type, ft.Name, list);
+                    list.AddRange(PopulateQueryArgumentInfoList(graphType, type, name, entityPath));
                 }
                 else
                 {
-                    Type parentModel = parentType?.ModelType();
-                    string resolvedParentPrefix = _autoMapperPropertyNameResolver.Resolve(parentModel, graphParentName);
-
                     Type thisModel = type.ModelType();
                     string resolvedPropertyName = _autoMapperPropertyNameResolver.Resolve(thisModel, ft.Name);
 
                     list.Add(new QueryArgumentInfo
                     {
-                        QueryArgument = new QueryArgument(graphType) { Name = $"{graphParentName.ToLowerInvariant()}{ft.Name}" },
-                        EntityPropertyPath = parentType != null ? $"{resolvedParentPrefix}.{resolvedPropertyName}" : resolvedPropertyName
+                        QueryArgument = new QueryArgument(graphType) { Name = name },
+                        EntityPropertyPath = !string.IsNullOrEmpty(entityPath) ? $"{entityPath}.{resolvedPropertyName}" : resolvedPropertyName
                     });
                 }
             });
+
+            return list;
         }
 
         public MyHotelQuery(ReservationRepository reservationRepository, IAutoMapperPropertyNameResolver autoMapperPropertyNameResolver, IMapper mapper)
         {
             _autoMapperPropertyNameResolver = autoMapperPropertyNameResolver;
-            var roomQueryArgumentList = new List<QueryArgumentInfo>();
-            Loop(typeof(RoomType), null, "", roomQueryArgumentList);
 
+            var roomQueryArgumentList = PopulateQueryArgumentInfoList(typeof(RoomType));
             Field<ListGraphType<RoomType>>("rooms",
                 arguments: new QueryArguments(roomQueryArgumentList.Select(q => q.QueryArgument)),
-                resolve: context =>
-                {
-                    IQueryable query = reservationRepository.GetRoomsQuery().AsQueryable();
-
-                    Console.WriteLine("rooms: context.Arguments = " + JsonConvert.SerializeObject(context.Arguments));
-
-                    if (context.Arguments != null)
-                    {
-                        foreach (var argument in context.Arguments)
-                        {
-                            var info = roomQueryArgumentList.First(i => i.QueryArgument.Name == argument.Key);
-                            query = query.Where($"np({info.EntityPropertyPath}) == {argument.Value}");
-                        }
-                    }
-
-                    var list = query.ProjectTo<RoomModel>(mapper.ConfigurationProvider).ToList();
-                    return list;
-                }
+                resolve: context => reservationRepository
+                    .GetRoomsQuery()
+                    .ApplyQueryArguments(roomQueryArgumentList, context.Arguments)
+                    .ProjectTo<RoomModel>(mapper.ConfigurationProvider)
+                    .ToList()
             );
 
+            var flatRoomQueryArgumentList = PopulateQueryArgumentInfoList(typeof(FlatRoomType));
+            Field<ListGraphType<FlatRoomType>>("flatrooms",
+                arguments: new QueryArguments(flatRoomQueryArgumentList.Select(q => q.QueryArgument)),
+                resolve: context => reservationRepository
+                    .GetRoomsQuery()
+                    .ApplyQueryArguments(flatRoomQueryArgumentList, context.Arguments)
+                    .ProjectTo<FlatRoomModel>(mapper.ConfigurationProvider)
+                    .ToList()
+            );
+
+            var reservationQueryArgumentList = PopulateQueryArgumentInfoList(typeof(ReservationType));
             Field<ListGraphType<ReservationType>>("reservations",
+                arguments: new QueryArguments(reservationQueryArgumentList.Select(q => q.QueryArgument)),
+                resolve: context => reservationRepository
+                    .GetReservationsQuery()
+                    .ApplyQueryArguments(reservationQueryArgumentList, context.Arguments)
+                    .ProjectTo<ReservationModel>(mapper.ConfigurationProvider)
+                    .ToList()
+            );
+
+            Field<ListGraphType<ReservationType>>("reservations2",
                 arguments: new QueryArguments(new List<QueryArgument>
                 {
                     new QueryArgument<IdGraphType>
