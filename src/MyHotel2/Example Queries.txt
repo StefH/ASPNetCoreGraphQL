@@ -1,0 +1,74 @@
+query {
+  reservations(roomAllowedSmoking: true, roomDetailBeds: 2) {
+    checkinDate
+    guest {
+      name
+    }
+    room {
+      name
+      number
+      status
+      detail {
+        beds
+        windows
+      }
+    }
+  }
+}
+
+
+query {
+  reservations(checkinDate: "2019-08-01") {
+    checkinDate
+    guest {
+      name
+    }
+    room {
+      name
+      number
+      status
+      detail {
+        beds
+        windows
+      }
+    }
+  }
+}
+
+
+query {
+  rooms {
+    name
+    number
+    status
+    detail {
+      beds
+      windows
+    }
+  }
+}
+
+
+query {
+  rooms (detailBeds: 2) {
+    name
+    number
+    status
+    detail {
+      identifier
+      beds
+      windows
+    }
+  }
+}
+
+query {
+  flatrooms(beds: 2) {
+    name
+    number
+    status
+    beds
+    windows
+  }
+}
+
