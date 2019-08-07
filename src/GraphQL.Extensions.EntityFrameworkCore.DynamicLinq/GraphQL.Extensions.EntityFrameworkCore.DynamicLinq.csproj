@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyTitle>GraphQL.Extensions.EntityFrameworkCore.DynamicLinq</AssemblyTitle>
+    <Description>Dynamic Linq extensions for EntityFramework which adds Async support</Description>
+    <PackageTags>GraphQL;entityframework;core;dynamiclinq</PackageTags>
+    <Version>1.0.0.0-preview00</Version>
+    <TargetFrameworks>netstandard20</TargetFrameworks>
+    <Authors>Stef Heyenrath</Authors>
+    <Copyright>Stef Heyenrath</Copyright>
+    <PackageReleaseNotes>Bugfixes and new Features. For details see CHANGELOG.md</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/StefH/System.Linq.Dynamic.Core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/StefH/System.Linq.Dynamic.Core</RepositoryUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/StefH/System.Linq.Dynamic.Core/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <DefaultLanguage>en-us</DefaultLanguage>
+    <ProjectGuid>{003C2B77-F413-4882-B904-2686C968392D}</ProjectGuid>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!--<AssemblyOriginatorKeyFile>EntityFramework.DynamicLinq.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>-->
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GraphQL" Version="2.4.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="1.0.18" />
+  </ItemGroup>
+
+</Project>
