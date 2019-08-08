@@ -1,19 +1,19 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using GraphQL;
+using GraphQL.EntityFrameworkCore.DynamicLinq.Builder;
+using GraphQL.EntityFrameworkCore.DynamicLinq.Extensions;
+using GraphQL.EntityFrameworkCore.DynamicLinq.Resolvers;
 using GraphQL.Types;
+using MyHotel.EntityFrameworkCore.Entities;
 using MyHotel.GraphQL.Types;
 using MyHotel.Models;
 using MyHotel.Repositories;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using GraphQL.EntityFrameworkCore.DynamicLinq.Extensions;
-using GraphQL.EntityFrameworkCore.DynamicLinq.Helpers;
-using GraphQL.EntityFrameworkCore.DynamicLinq.Resolvers;
-using MyHotel.EntityFrameworkCore.Entities;
 
 namespace MyHotel.GraphQL
 {
@@ -60,41 +60,25 @@ namespace MyHotel.GraphQL
         //    return list;
         //}
 
-        public MyHotelQuery(MyHotelRepository myHotelRepository, IQueryArgumentInfoHelper helper, IMapper mapper)
+        public MyHotelQuery(MyHotelRepository myHotelRepository, IQueryArgumentInfoListBuilder builder, IMapper mapper)
         {
-            //_autoMapperPropertyNameResolver = autoMapperPropertyNameResolver;
-
-            var roomQueryArgumentList = helper.PopulateQueryArgumentInfoList<RoomType>();
+            var roomQueryArgumentList = builder.Build<RoomType>().Exclude("Id");
             Field<ListGraphType<RoomType>>("rooms",
                 arguments: new QueryArguments(roomQueryArgumentList.Select(q => q.QueryArgument)),
-                resolve: context => myHotelRepository
-                    .GetRoomsQuery()
-                    .ApplyQueryArguments(roomQueryArgumentList, context.Arguments)
-                    .ProjectTo<RoomModel>(mapper.ConfigurationProvider)
-                    .ToList()
+                resolve: context => mapper.Map<IEnumerable<RoomModel>>(myHotelRepository.GetRoomsQuery().ApplyQueryArguments(roomQueryArgumentList, context.Arguments))
             );
 
-            var flatRoomQueryArgumentList = helper.PopulateQueryArgumentInfoList<FlatRoomType>();
+            var flatRoomQueryArgumentList = builder.Build<FlatRoomType>();
             Field<ListGraphType<FlatRoomType>>("flatrooms",
                 arguments: new QueryArguments(flatRoomQueryArgumentList.Select(q => q.QueryArgument)),
-                resolve: context => myHotelRepository
-                    .GetRoomsQuery()
-                    .ApplyQueryArguments(flatRoomQueryArgumentList, context.Arguments)
-                    .ProjectTo<FlatRoomModel>(mapper.ConfigurationProvider)
-                    .ToList()
+                resolve: context => mapper.Map<IEnumerable<FlatRoomModel>>(myHotelRepository.GetRoomsQuery().ApplyQueryArguments(roomQueryArgumentList, context.Arguments))
             );
 
-            var reservationQueryArgumentList = helper.PopulateQueryArgumentInfoList<ReservationType>();
+            var reservationQueryArgumentList = builder.Build<ReservationType>();
             Field<ListGraphType<ReservationType>>("reservations",
                 arguments: new QueryArguments(reservationQueryArgumentList.Select(q => q.QueryArgument)),
-                resolve: context =>
-                {
-                    return myHotelRepository
-                        .GetReservationsQuery()
-                        .ApplyQueryArguments(reservationQueryArgumentList, context.Arguments)
-                        .ProjectTo<ReservationModel>(mapper.ConfigurationProvider)
-                        .ToList();
-                });
+                resolve: context => mapper.Map<IEnumerable<Reservation>>(myHotelRepository.GetReservationsQuery().ApplyQueryArguments(roomQueryArgumentList, context.Arguments))
+            );
 
             Field<ListGraphType<ReservationType>>("reservations2",
                 arguments: new QueryArguments(new List<QueryArgument>

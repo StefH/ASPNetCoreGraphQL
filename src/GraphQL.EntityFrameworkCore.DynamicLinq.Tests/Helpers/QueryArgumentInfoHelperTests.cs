@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using FluentAssertions;
-using GraphQL.EntityFrameworkCore.DynamicLinq.Helpers;
+using GraphQL.EntityFrameworkCore.DynamicLinq.Builder;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Resolvers;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Utils.Types;
 using Moq;
@@ -13,7 +13,7 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Helpers
     {
         private readonly Mock<IPropertyPathResolver> _propertyPathResolverMock;
 
-        private readonly QueryArgumentInfoHelper _sut;
+        private readonly QueryArgumentInfoListBuilder _sut;
 
         public QueryArgumentInfoHelperTests()
         {
@@ -21,7 +21,7 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Helpers
             _propertyPathResolverMock.Setup(pr => pr.Resolve(It.IsAny<Type>(), It.IsAny<string>(), It.IsAny<Type>()))
                 .Returns((Type sourceType, string sourcePath, Type destinationType) => sourcePath);
 
-            _sut = new QueryArgumentInfoHelper(_propertyPathResolverMock.Object);
+            _sut = new QueryArgumentInfoListBuilder(_propertyPathResolverMock.Object);
         }
 
         [Fact]
@@ -31,10 +31,10 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Helpers
             _propertyPathResolverMock.Setup(pr => pr.Resolve(It.IsAny<Type>(), "Id", It.IsAny<Type>())).Returns("Idee");
 
             // Act
-            var list = _sut.PopulateQueryArgumentInfoList<GuestType>();
+            var list = _sut.Build<GuestType>();
 
             // Assert
-            list.Select(q => q.GraphPath).Should().BeEquivalentTo("Id", "Name", "RegisterDate");
+            list.Select(q => q.GraphQLPath).Should().BeEquivalentTo("Id", "Name", "RegisterDate");
             list.Select(q => q.EntityPath).Should().BeEquivalentTo("Idee", "Name", "RegisterDate");
         }
 
@@ -42,10 +42,10 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Helpers
         public void PopulateQueryArgumentInfoList_With_GraphType_With_NestedGraphTypes_ReturnsCorrectQueryArgumentInfoList()
         {
             // Act
-            var list = _sut.PopulateQueryArgumentInfoList<ReservationType>();
+            var list = _sut.Build<ReservationType>();
 
             // Assert
-            list.Select(q => q.GraphPath).Should().BeEquivalentTo(
+            list.Select(q => q.GraphQLPath).Should().BeEquivalentTo(
                 "Id",
                 "CheckinDate",
                 "CheckoutDate",

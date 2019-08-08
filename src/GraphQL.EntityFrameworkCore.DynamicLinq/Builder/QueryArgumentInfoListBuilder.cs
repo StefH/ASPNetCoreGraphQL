@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Extensions;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Models;
@@ -7,34 +6,34 @@ using GraphQL.EntityFrameworkCore.DynamicLinq.Resolvers;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Validation;
 using GraphQL.Types;
 
-namespace GraphQL.EntityFrameworkCore.DynamicLinq.Helpers
+namespace GraphQL.EntityFrameworkCore.DynamicLinq.Builder
 {
-    internal class QueryArgumentInfoHelper : IQueryArgumentInfoHelper
+    internal class QueryArgumentInfoListBuilder : IQueryArgumentInfoListBuilder
     {
         private readonly IPropertyPathResolver _propertyPathResolver;
 
-        public QueryArgumentInfoHelper(IPropertyPathResolver propertyPathResolver)
+        public QueryArgumentInfoListBuilder(IPropertyPathResolver propertyPathResolver)
         {
             Guard.NotNull(propertyPathResolver, nameof(propertyPathResolver));
 
             _propertyPathResolver = propertyPathResolver;
         }
 
-        public ICollection<QueryArgumentInfo> PopulateQueryArgumentInfoList<T>()
+        public QueryArgumentInfoList Build<T>()
         {
-            return PopulateQueryArgumentInfoList(typeof(T));
+            return Build(typeof(T));
         }
 
-        public ICollection<QueryArgumentInfo> PopulateQueryArgumentInfoList(Type graphQLType)
+        public QueryArgumentInfoList Build(Type graphQLType)
         {
             Guard.NotNull(graphQLType, nameof(graphQLType));
 
             return PopulateQueryArgumentInfoList(graphQLType, string.Empty, string.Empty);
         }
 
-        private ICollection<QueryArgumentInfo> PopulateQueryArgumentInfoList(Type graphQLType, string parentGraphQLPath, string parentEntityPath)
+        private QueryArgumentInfoList PopulateQueryArgumentInfoList(Type graphQLType, string parentGraphQLPath, string parentEntityPath)
         {
-            var list = new List<QueryArgumentInfo>();
+            var list = new QueryArgumentInfoList();
             if (!(Activator.CreateInstance(graphQLType) is IComplexGraphType complexGraphQLInstance))
             {
                 return list;
@@ -58,7 +57,7 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Helpers
                     list.Add(new QueryArgumentInfo
                     {
                         QueryArgument = new QueryArgument(childGraphQLType) { Name = graphPath },
-                        GraphPath = graphPath,
+                        GraphQLPath = graphPath,
                         EntityPath = entityPath
                     });
                 }

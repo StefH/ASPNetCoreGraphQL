@@ -4,10 +4,10 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Models
 {
     public class QueryArgumentInfo
     {
-        public QueryArgument QueryArgument { get; set; }
+        public QueryArgument QueryArgument { get; internal set; }
 
-        public string GraphPath { get; set; }
+        public string GraphQLPath { get; internal set; }
 
-        public string EntityPath { get; set; }
+        public string EntityPath { get; internal set; }
     }
 }

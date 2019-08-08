@@ -1,4 +1,4 @@
-﻿using GraphQL.EntityFrameworkCore.DynamicLinq.Helpers;
+﻿using GraphQL.EntityFrameworkCore.DynamicLinq.Builder;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Resolvers;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Validation;
 using JetBrains.Annotations;
@@ -29,7 +29,7 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.DependencyInjection
         private static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IPropertyPathResolver, DefaultPropertyPathResolver>();
-            services.AddScoped<IQueryArgumentInfoHelper, QueryArgumentInfoHelper>();
+            services.AddScoped<IQueryArgumentInfoListBuilder, QueryArgumentInfoListBuilder>();
         }
     }
 }

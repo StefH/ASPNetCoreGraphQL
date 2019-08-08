@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using GraphQL;
+using GraphQL.EntityFrameworkCore.DynamicLinq.Builder;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Extensions;
-using GraphQL.EntityFrameworkCore.DynamicLinq.Helpers;
 using GraphQL.Types;
 using MyHotel.Entities;
 using MyHotel.GraphQL.Types;
@@ -52,9 +52,9 @@ namespace MyHotel.GraphQL
         //    return list;
         //}
 
-        public MyHotelQuery(MyHotelRepository myHotelRepository, IQueryArgumentInfoHelper helper)
+        public MyHotelQuery(MyHotelRepository myHotelRepository, IQueryArgumentInfoListBuilder builder)
         {
-            var roomQueryArgumentList = helper.PopulateQueryArgumentInfoList<RoomType>();
+            var roomQueryArgumentList = builder.Build<RoomType>();
             Field<ListGraphType<RoomType>>("rooms",
                 arguments: new QueryArguments(roomQueryArgumentList.Select(q => q.QueryArgument)),
                 resolve: context => myHotelRepository
@@ -63,7 +63,7 @@ namespace MyHotel.GraphQL
                     .ToList()
             );
             
-            var reservationQueryArgumentList = helper.PopulateQueryArgumentInfoList(typeof(ReservationType));
+            var reservationQueryArgumentList = builder.Build(typeof(ReservationType));
             Field<ListGraphType<ReservationType>>("reservations",
                 arguments: new QueryArguments(reservationQueryArgumentList.Select(q => q.QueryArgument)),
                 resolve: context =>

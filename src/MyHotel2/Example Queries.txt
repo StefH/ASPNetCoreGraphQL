@@ -38,6 +38,7 @@ query {
 
 query {
   rooms {
+    id
     name
     number
     status
