@@ -1,6 +1,9 @@
+using System;
 using AutoMapper;
 using GraphQL;
 using GraphQL.Client;
+using GraphQL.EntityFrameworkCore.DynamicLinq.DependencyInjection;
+using GraphQL.EntityFrameworkCore.DynamicLinq.Resolvers;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -16,9 +19,7 @@ using MyHotel.AutoMapper;
 using MyHotel.EntityFrameworkCore;
 using MyHotel.GraphQL;
 using MyHotel.GraphQL.Client;
-using MyHotel.GraphQL.Helpers;
 using MyHotel.Repositories;
-using System;
 
 namespace MyHotel
 {
@@ -42,8 +43,10 @@ namespace MyHotel
             services.AddHttpClient<ReservationHttpGraphqlClient>(x => x.BaseAddress = new Uri(Configuration["GraphQlEndpoint"]));
             services.AddSingleton(t => new GraphQLClient(Configuration["GraphQlEndpoint"]));
             services.AddSingleton<ReservationGraphqlClient>();
-            services.AddScoped<IAutoMapperPropertyNameResolver, AutoMapperPropertyNameResolver>();
-            services.AddScoped<IQueryArgumentInfoHelper, QueryArgumentInfoHelper>();
+
+            services.AddGraphQLEntityFrameworkCoreDynamicLinq();
+            services.AddScoped<IPropertyPathResolver, AutoMapperPropertyPathResolver>();
+            
             //***</ My services >*** 
 
             // In production, the Angular files will be served from this directory

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyTitle>GraphQL.Extensions.EntityFrameworkCore.DynamicLinq</AssemblyTitle>
-    <Description>Dynamic Linq extensions for EntityFramework which adds Async support</Description>
+    <AssemblyTitle>GraphQL.EntityFrameworkCore.DynamicLinq</AssemblyTitle>
+    <Description>GraphQL EntityFrameworkCore Dynamic Linq extensions to query GraphQL types dynamically</Description>
     <PackageTags>GraphQL;entityframework;core;dynamiclinq</PackageTags>
     <Version>1.0.0.0-preview00</Version>
     <TargetFrameworks>netstandard20</TargetFrameworks>
@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <PackageReference Include="GraphQL" Version="2.4.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="1.0.18" />
   </ItemGroup>
 

@@ -2,8 +2,6 @@
 using AutoMapper.QueryableExtensions;
 using GraphQL;
 using GraphQL.Types;
-using MyHotel.AutoMapper;
-using MyHotel.Extensions;
 using MyHotel.GraphQL.Types;
 using MyHotel.Models;
 using MyHotel.Repositories;
@@ -12,53 +10,55 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using GraphQL.EntityFrameworkCore.DynamicLinq.Extensions;
+using GraphQL.EntityFrameworkCore.DynamicLinq.Helpers;
+using GraphQL.EntityFrameworkCore.DynamicLinq.Resolvers;
 using MyHotel.EntityFrameworkCore.Entities;
-using MyHotel.GraphQL.Helpers;
 
 namespace MyHotel.GraphQL
 {
     public class MyHotelQuery : ObjectGraphType
     {
-        private readonly IAutoMapperPropertyNameResolver _autoMapperPropertyNameResolver;
+        private readonly IPropertyPathResolver _propertyPathResolver;
 
-        private ICollection<QueryArgumentInfo> PopulateQueryArgumentInfoListOld(Type type, Type parentType = null, string graphPathPrefix = "", string entityPathPrefix = "")
-        {
-            var list = new List<QueryArgumentInfo>();
-            if (!(Activator.CreateInstance(type) is IComplexGraphType complexGraphInstance))
-            {
-                return list;
-            }
+        //private ICollection<QueryArgumentInfo> PopulateQueryArgumentInfoListOld(Type type, Type parentType = null, string graphPathPrefix = "", string entityPathPrefix = "")
+        //{
+        //    var list = new List<QueryArgumentInfo>();
+        //    if (!(Activator.CreateInstance(type) is IComplexGraphType complexGraphInstance))
+        //    {
+        //        return list;
+        //    }
 
-            complexGraphInstance.Fields.ToList().ForEach(ft =>
-            {
-                Type graphType = ft.Type.GraphType();
-                Type parentModel = parentType?.ModelType();
+        //    complexGraphInstance.Fields.ToList().ForEach(ft =>
+        //    {
+        //        Type graphType = ft.Type.GraphType();
+        //        Type parentModel = parentType?.ModelType();
 
-                string resolvedParentEntityPath = _autoMapperPropertyNameResolver.Resolve(parentModel, graphPathPrefix);
+        //        string resolvedParentEntityPath = _propertyPathResolver.Resolve(parentModel, graphPathPrefix);
 
-                string graphPath = $"{graphPathPrefix}{ft.Name}";
-                string entityPath = !string.IsNullOrEmpty(entityPathPrefix) ? $"{entityPathPrefix}.{resolvedParentEntityPath}" : resolvedParentEntityPath;
+        //        string graphPath = $"{graphPathPrefix}{ft.Name}";
+        //        string entityPath = !string.IsNullOrEmpty(entityPathPrefix) ? $"{entityPathPrefix}.{resolvedParentEntityPath}" : resolvedParentEntityPath;
 
-                if (graphType.IsObjectGraphType())
-                {
-                    list.AddRange(PopulateQueryArgumentInfoListOld(graphType, type, graphPath, entityPath));
-                }
-                else
-                {
-                    Type thisModel = type.ModelType();
-                    string resolvedPropertyName = _autoMapperPropertyNameResolver.Resolve(thisModel, ft.Name);
+        //        if (graphType.IsObjectGraphType())
+        //        {
+        //            list.AddRange(PopulateQueryArgumentInfoListOld(graphType, type, graphPath, entityPath));
+        //        }
+        //        else
+        //        {
+        //            Type thisModel = type.ModelType();
+        //            string resolvedPropertyName = _propertyPathResolver.Resolve(thisModel, ft.Name);
 
-                    list.Add(new QueryArgumentInfo
-                    {
-                        QueryArgument = new QueryArgument(graphType) { Name = graphPath },
-                        GraphPath = graphPath,
-                        EntityPath = !string.IsNullOrEmpty(entityPath) ? $"{entityPath}.{resolvedPropertyName}" : resolvedPropertyName
-                    });
-                }
-            });
+        //            list.Add(new QueryArgumentInfo
+        //            {
+        //                QueryArgument = new QueryArgument(graphType) { Name = graphPath },
+        //                GraphPath = graphPath,
+        //                EntityPath = !string.IsNullOrEmpty(entityPath) ? $"{entityPath}.{resolvedPropertyName}" : resolvedPropertyName
+        //            });
+        //        }
+        //    });
 
-            return list;
-        }
+        //    return list;
+        //}
 
         public MyHotelQuery(MyHotelRepository myHotelRepository, IQueryArgumentInfoHelper helper, IMapper mapper)
         {
@@ -69,7 +69,7 @@ namespace MyHotel.GraphQL
                 arguments: new QueryArguments(roomQueryArgumentList.Select(q => q.QueryArgument)),
                 resolve: context => myHotelRepository
                     .GetRoomsQuery()
-                    .ApplyQueryArguments(roomQueryArgumentList, context.Arguments, context.SubFields)
+                    .ApplyQueryArguments(roomQueryArgumentList, context.Arguments)
                     .ProjectTo<RoomModel>(mapper.ConfigurationProvider)
                     .ToList()
             );
@@ -79,7 +79,7 @@ namespace MyHotel.GraphQL
                 arguments: new QueryArguments(flatRoomQueryArgumentList.Select(q => q.QueryArgument)),
                 resolve: context => myHotelRepository
                     .GetRoomsQuery()
-                    .ApplyQueryArguments(flatRoomQueryArgumentList, context.Arguments, context.SubFields)
+                    .ApplyQueryArguments(flatRoomQueryArgumentList, context.Arguments)
                     .ProjectTo<FlatRoomModel>(mapper.ConfigurationProvider)
                     .ToList()
             );
@@ -91,7 +91,7 @@ namespace MyHotel.GraphQL
                 {
                     return myHotelRepository
                         .GetReservationsQuery()
-                        .ApplyQueryArguments(reservationQueryArgumentList, context.Arguments, context.SubFields)
+                        .ApplyQueryArguments(reservationQueryArgumentList, context.Arguments)
                         .ProjectTo<ReservationModel>(mapper.ConfigurationProvider)
                         .ToList();
                 });

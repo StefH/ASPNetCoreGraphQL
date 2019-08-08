@@ -14,6 +14,7 @@ using MyHotel.GraphQL;
 using MyHotel.GraphQL.Client;
 using MyHotel.Repositories;
 using System;
+using GraphQL.EntityFrameworkCore.DynamicLinq.DependencyInjection;
 
 
 namespace MyHotel
@@ -36,6 +37,7 @@ namespace MyHotel
             services.AddHttpClient<ReservationHttpGraphqlClient>(x => x.BaseAddress = new Uri(Configuration["GraphQlEndpoint"]));
             services.AddSingleton(t => new GraphQLClient(Configuration["GraphQlEndpoint"]));
             services.AddSingleton<ReservationGraphqlClient>();
+            services.AddGraphQLEntityFrameworkCoreDynamicLinq();
             //***</ My services >*** 
 
             // In production, the Angular files will be served from this directory

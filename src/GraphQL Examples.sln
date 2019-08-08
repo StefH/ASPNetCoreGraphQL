@@ -36,7 +36,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authorization", "Authorizat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQLNet", "GraphQL\GraphQLNet\GraphQLNet.csproj", "{CC914DF2-0811-4AA0-8C43-C5BB304CEF8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQL.Extensions.EntityFrameworkCore.DynamicLinq", "GraphQL.Extensions.EntityFrameworkCore.DynamicLinq\GraphQL.Extensions.EntityFrameworkCore.DynamicLinq.csproj", "{003C2B77-F413-4882-B904-2686C968392D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4B7EA302-B0F2-4952-B304-20FC4E51B16C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQL.EntityFrameworkCore.DynamicLinq", "GraphQL.EntityFrameworkCore.DynamicLinq\GraphQL.EntityFrameworkCore.DynamicLinq.csproj", "{003C2B77-F413-4882-B904-2686C968392D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQL.EntityFrameworkCore.DynamicLinq.Tests", "GraphQL.EntityFrameworkCore.DynamicLinq.Tests\GraphQL.EntityFrameworkCore.DynamicLinq.Tests.csproj", "{F498C140-7A27-48AE-986B-5DFB56D4C167}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,6 +84,10 @@ Global
 		{003C2B77-F413-4882-B904-2686C968392D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{003C2B77-F413-4882-B904-2686C968392D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{003C2B77-F413-4882-B904-2686C968392D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F498C140-7A27-48AE-986B-5DFB56D4C167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F498C140-7A27-48AE-986B-5DFB56D4C167}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F498C140-7A27-48AE-986B-5DFB56D4C167}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F498C140-7A27-48AE-986B-5DFB56D4C167}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,6 +101,8 @@ Global
 		{0BD47B35-FFA9-489C-9092-EC81D4AA9E4E} = {FE922B0D-16F3-45AC-BB0B-C449A6233A69}
 		{45F3A822-8F81-4716-BFBB-73161D459161} = {ED4F7ED4-9CFD-43FD-9A94-C028C1CB010E}
 		{CC914DF2-0811-4AA0-8C43-C5BB304CEF8D} = {BBC757BE-20B6-40C6-9E44-2C8F497AC8F6}
+		{003C2B77-F413-4882-B904-2686C968392D} = {4B7EA302-B0F2-4952-B304-20FC4E51B16C}
+		{F498C140-7A27-48AE-986B-5DFB56D4C167} = {4B7EA302-B0F2-4952-B304-20FC4E51B16C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C9F3067-8D49-47A5-B5D1-5C7FA8527166}

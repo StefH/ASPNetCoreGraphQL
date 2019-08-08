@@ -1,5 +1,5 @@
 query {
-  reservations(roomAllowedSmoking: true, roomDetailBeds: 2) {
+  reservations(roomAllowedSmoking: false, roomRoomDetailBeds: 2) {
     checkinDate
     guest {
       name
@@ -8,7 +8,7 @@ query {
       name
       number
       status
-      detail {
+      roomDetail {
         beds
         windows
       }
@@ -22,7 +22,7 @@ query {
     name
     number
     status
-    detail {
+    roomDetail {
       beds
       windows
     }
@@ -31,25 +31,14 @@ query {
 
 
 query {
-  rooms (detailBeds: 2) {
+  rooms (roomDetailBeds: 2) {
     name
     number
     status
-    detail {
-      identifier
+    roomDetail {
+      id
       beds
       windows
     }
   }
 }
-
-query {
-  flatrooms(beds: 2) {
-    name
-    number
-    status
-    beds
-    windows
-  }
-}
-
