@@ -9,11 +9,11 @@ namespace MyHotel.GraphQL.Helpers
 {
     public class QueryArgumentInfoHelper : IQueryArgumentInfoHelper
     {
-        private readonly IAutoMapperPropertyNameResolver _autoMapperPropertyNameResolver;
+        private readonly IPropertyPathResolver _propertyPathResolver;
 
-        public QueryArgumentInfoHelper(IAutoMapperPropertyNameResolver autoMapperPropertyNameResolver)
+        public QueryArgumentInfoHelper(IPropertyPathResolver propertyPathResolver)
         {
-            _autoMapperPropertyNameResolver = autoMapperPropertyNameResolver;
+            _propertyPathResolver = propertyPathResolver;
         }
 
         public ICollection<QueryArgumentInfo> PopulateQueryArgumentInfoList<T>()
@@ -34,7 +34,7 @@ namespace MyHotel.GraphQL.Helpers
                 Type graphType = fieldType.Type.GraphType();
                 Type parentModel = parentType?.ModelType();
 
-                string resolvedParentEntityPath = _autoMapperPropertyNameResolver.Resolve(parentModel, graphPathPrefix);
+                string resolvedParentEntityPath = _propertyPathResolver.Resolve(parentModel, graphPathPrefix, null);
 
                 string graphPath = $"{graphPathPrefix}{fieldType.Name}";
                 string entityPath = !string.IsNullOrEmpty(entityPathPrefix) ? $"{entityPathPrefix}.{resolvedParentEntityPath}" : resolvedParentEntityPath;
@@ -46,7 +46,7 @@ namespace MyHotel.GraphQL.Helpers
                 else
                 {
                     Type thisModel = type.ModelType();
-                    string resolvedPropertyName = _autoMapperPropertyNameResolver.Resolve(thisModel, fieldType.Name);
+                    string resolvedPropertyName = _propertyPathResolver.Resolve(thisModel, fieldType.Name, null);
 
                     list.Add(new QueryArgumentInfo
                     {

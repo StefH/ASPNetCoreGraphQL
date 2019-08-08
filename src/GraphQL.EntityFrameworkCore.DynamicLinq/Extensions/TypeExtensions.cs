@@ -1,10 +1,10 @@
-﻿using GraphQL.Types;
-using System;
+﻿using System;
 using System.Linq;
+using GraphQL.Types;
 
-namespace MyHotel.Extensions
+namespace GraphQL.EntityFrameworkCore.DynamicLinq.Extensions
 {
-    public static class TypeExtensions
+    internal static class TypeExtensions
     {
         public static Type GraphType(this Type type)
         {

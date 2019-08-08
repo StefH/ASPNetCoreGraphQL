@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GraphQLNet.Query
 {
@@ -13,11 +14,29 @@ namespace GraphQLNet.Query
     {
         public MessageQuery()
         {
-            Field(o => o.Content).Resolve(o => "This is Content").AuthorizeWith("Authorized");
-            Field(o => o.SentAt);
-            Field(o => o.Sub).Resolve(o => "This is Sub");
-            //Field(o => o.Image).Resolve(o => ConvertToBytes(@"C:\Users\edwardzh\Desktop\T1.PNG"));
-            Field(o => o.ImagePath).Resolve(o => Byte.Parse("Hello World"));
+            //Field(o => o.Content).Resolve(o => "This is Content").AuthorizeWith("Authorized");
+
+            var messages = new List<Message> {new Message {Id = 1, Content = "C1"}, new Message { Id = 2, Content = "C2" } };
+
+            Field<ListGraphType<MessageType>>("messages",
+                arguments: new QueryArguments(new List<QueryArgument>
+                {
+                    new QueryArgument<IdGraphType>
+                    {
+                        Name = "id"
+                    }
+                }),
+                resolve: context =>
+                {
+                    var id = context.GetArgument<int?>("id");
+                    if (id.HasValue)
+                    {
+                        return messages.Where(m => m.Id == id);
+                    }
+
+                    return messages;
+                }
+            ).AuthorizeWith("Authorized");
         }
 
         public byte[] ConvertToBytes(string fileName)

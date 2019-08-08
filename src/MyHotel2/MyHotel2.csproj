@@ -37,6 +37,21 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="AutoMapper\IPropertyPathResolver.cs" />
+    <Compile Remove="GraphQL\Helpers\IQueryArgumentInfoHelper.cs" />
+    <Compile Remove="GraphQL\Helpers\QueryArgumentInfo.cs" />
+    <Compile Remove="GraphQL\Helpers\QueryArgumentInfoHelper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="GraphQL\Helpers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GraphQL.EntityFrameworkCore.DynamicLinq\GraphQL.EntityFrameworkCore.DynamicLinq.csproj" />
+  </ItemGroup>
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
