@@ -39,13 +39,6 @@
 
   <ItemGroup>
     <Compile Remove="AutoMapper\IPropertyPathResolver.cs" />
-    <Compile Remove="GraphQL\Helpers\IQueryArgumentInfoHelper.cs" />
-    <Compile Remove="GraphQL\Helpers\QueryArgumentInfo.cs" />
-    <Compile Remove="GraphQL\Helpers\QueryArgumentInfoHelper.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="GraphQL\Helpers\" />
   </ItemGroup>
 
   <ItemGroup>

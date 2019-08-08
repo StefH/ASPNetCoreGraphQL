@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -12,7 +11,6 @@ using Microsoft.EntityFrameworkCore.Internal;
 // Copied from https://github.com/aspnet/EntityFramework/blob/dev/src/Shared/Check.cs
 namespace GraphQL.EntityFrameworkCore.DynamicLinq.Validation
 {
-    [ExcludeFromCodeCoverage]
     [DebuggerStepThrough]
     public static class Guard
     {

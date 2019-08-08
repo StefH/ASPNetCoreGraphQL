@@ -65,19 +65,28 @@ namespace MyHotel.GraphQL
             var roomQueryArgumentList = builder.Build<RoomType>().Exclude("Id");
             Field<ListGraphType<RoomType>>("rooms",
                 arguments: new QueryArguments(roomQueryArgumentList.Select(q => q.QueryArgument)),
-                resolve: context => mapper.Map<IEnumerable<RoomModel>>(myHotelRepository.GetRoomsQuery().ApplyQueryArguments(roomQueryArgumentList, context.Arguments))
+                resolve: context => myHotelRepository.GetRoomsQuery()
+                    .ApplyQueryArguments(roomQueryArgumentList, context.Arguments)
+                    .ProjectTo<RoomModel>(mapper.ConfigurationProvider)
+                    .ToList()
             );
 
             var flatRoomQueryArgumentList = builder.Build<FlatRoomType>();
             Field<ListGraphType<FlatRoomType>>("flatrooms",
                 arguments: new QueryArguments(flatRoomQueryArgumentList.Select(q => q.QueryArgument)),
-                resolve: context => mapper.Map<IEnumerable<FlatRoomModel>>(myHotelRepository.GetRoomsQuery().ApplyQueryArguments(roomQueryArgumentList, context.Arguments))
+                resolve: context => myHotelRepository.GetRoomsQuery()
+                    .ApplyQueryArguments(flatRoomQueryArgumentList, context.Arguments)
+                    .ProjectTo<FlatRoomModel>(mapper.ConfigurationProvider)
+                    .ToList()
             );
 
             var reservationQueryArgumentList = builder.Build<ReservationType>();
             Field<ListGraphType<ReservationType>>("reservations",
                 arguments: new QueryArguments(reservationQueryArgumentList.Select(q => q.QueryArgument)),
-                resolve: context => mapper.Map<IEnumerable<Reservation>>(myHotelRepository.GetReservationsQuery().ApplyQueryArguments(roomQueryArgumentList, context.Arguments))
+                resolve: context => myHotelRepository.GetReservationsQuery()
+                    .ApplyQueryArguments(reservationQueryArgumentList, context.Arguments)
+                    .ProjectTo<ReservationModel>(mapper.ConfigurationProvider)
+                    .ToList()
             );
 
             Field<ListGraphType<ReservationType>>("reservations2",

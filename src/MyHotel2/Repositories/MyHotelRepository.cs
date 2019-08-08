@@ -40,14 +40,10 @@ namespace MyHotel.Repositories
                 .Include(x => x.Guest);
         }
 
-        public IQueryable<Room> GetRoomsQuery()
+        public IIncludableQueryable<Room, RoomDetail> GetRoomsQuery()
         {
-            return _myHotelDbContext.Rooms;
-        }
-
-        public IIncludableQueryable<Room, RoomDetail> GetRoomsQuery2()
-        {
-            return _myHotelDbContext.Rooms.Include(x => x.RoomDetail);
+            return _myHotelDbContext.Rooms
+                .Include(x => x.RoomDetail);
         }
     }
 }

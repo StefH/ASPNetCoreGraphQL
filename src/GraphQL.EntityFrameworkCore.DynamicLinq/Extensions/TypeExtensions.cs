@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using GraphQL.Types;
 
 namespace GraphQL.EntityFrameworkCore.DynamicLinq.Extensions
@@ -8,17 +9,17 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Extensions
     {
         public static Type GraphType(this Type type)
         {
-            return type.BaseType == typeof(NonNullGraphType) ? type.GetGenericArguments().First() : type;
+            return type.GetTypeInfo().BaseType == typeof(NonNullGraphType) ? type.GetGenericArguments().First() : type;
         }
 
         public static bool IsObjectGraphType(this Type type)
         {
-            return type.BaseType != null && type.BaseType.Name == "ObjectGraphType`1";
+            return type.GetTypeInfo().BaseType != null && type.GetTypeInfo().BaseType.Name == "ObjectGraphType`1";
         }
 
         public static Type ModelType(this Type type)
         {
-            return type?.GraphType().BaseType?.GetGenericArguments().First();
+            return type?.GraphType().GetTypeInfo().BaseType?.GetGenericArguments().First();
         }
     }
 }
