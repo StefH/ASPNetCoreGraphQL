@@ -29,39 +29,35 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Helpers
         {
             Guard.NotNull(graphQLType, nameof(graphQLType));
 
-            return PopulateQueryArgumentInfoList(graphQLType, null, "", "");
+            return PopulateQueryArgumentInfoList(graphQLType, string.Empty, string.Empty);
         }
 
-        private ICollection<QueryArgumentInfo> PopulateQueryArgumentInfoList(Type graphQLType, Type parentGraphQLType, string parentGraphQLPath, string parentEntityPath)
+        private ICollection<QueryArgumentInfo> PopulateQueryArgumentInfoList(Type graphQLType, string parentGraphQLPath, string parentEntityPath)
         {
             var list = new List<QueryArgumentInfo>();
-            if (!(Activator.CreateInstance(graphQLType) is IComplexGraphType complexGraphInstance))
+            if (!(Activator.CreateInstance(graphQLType) is IComplexGraphType complexGraphQLInstance))
             {
                 return list;
             }
 
-            complexGraphInstance.Fields.ToList().ForEach(ft =>
+            complexGraphQLInstance.Fields.ToList().ForEach(ft =>
             {
                 string graphPath = $"{parentGraphQLPath}{ft.Name}";
-                // Type underlyingParentType = parentGraphQLType?.ModelType();
-                Type thisModel = graphQLType.ModelType();
 
+                Type thisModel = graphQLType.ModelType();
                 string resolvedParentEntityPath = _propertyPathResolver.Resolve(thisModel, ft.Name);
                 string entityPath = !string.IsNullOrEmpty(parentEntityPath) ? $"{parentEntityPath}.{resolvedParentEntityPath}" : resolvedParentEntityPath;
 
-                Type graphType = ft.Type.GraphType();
-                if (graphType.IsObjectGraphType())
+                Type childGraphQLType = ft.Type.GraphType();
+                if (childGraphQLType.IsObjectGraphType())
                 {
-                    list.AddRange(PopulateQueryArgumentInfoList(graphType, graphQLType, graphPath, entityPath));
+                    list.AddRange(PopulateQueryArgumentInfoList(childGraphQLType, graphPath, entityPath));
                 }
                 else
                 {
-                    //Type thisModel = type.ModelType();
-                    //string resolvedPropertyName = _propertyPathResolver.Resolve(thisModel, ft.Name);
-
                     list.Add(new QueryArgumentInfo
                     {
-                        QueryArgument = new QueryArgument(graphType) { Name = graphPath },
+                        QueryArgument = new QueryArgument(childGraphQLType) { Name = graphPath },
                         GraphPath = graphPath,
                         EntityPath = entityPath
                     });

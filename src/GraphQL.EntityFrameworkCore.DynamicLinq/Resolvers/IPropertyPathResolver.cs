@@ -5,6 +5,6 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Resolvers
 {
     public interface IPropertyPathResolver
     {
-        string Resolve([CanBeNull] Type sourceType, [NotNull] string sourcepropertyPath, [CanBeNull] Type destinationType = null);
+        string Resolve([NotNull] Type sourceType, [NotNull] string sourcepropertyPath, [CanBeNull] Type destinationType = null);
     }
 }
