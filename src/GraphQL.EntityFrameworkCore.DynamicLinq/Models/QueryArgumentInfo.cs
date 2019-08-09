@@ -1,9 +1,12 @@
-﻿using GraphQL.Types;
+﻿using GraphQL.EntityFrameworkCore.DynamicLinq.Enumerations;
+using GraphQL.Types;
 
 namespace GraphQL.EntityFrameworkCore.DynamicLinq.Models
 {
     public class QueryArgumentInfo
     {
+        public QueryArgumentInfoType QueryArgumentInfoType { get; internal set; }
+
         public QueryArgument QueryArgument { get; internal set; }
 
         public string GraphQLPath { get; internal set; }

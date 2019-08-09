@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using GraphQL.EntityFrameworkCore.DynamicLinq.Enumerations;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Extensions;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Models;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Resolvers;
@@ -58,7 +59,8 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Builder
                     {
                         QueryArgument = new QueryArgument(childGraphQLType) { Name = graphPath },
                         GraphQLPath = graphPath,
-                        EntityPath = entityPath
+                        EntityPath = entityPath,
+                        QueryArgumentInfoType = QueryArgumentInfoType.DefaultGraphQL
                     });
                 }
             });

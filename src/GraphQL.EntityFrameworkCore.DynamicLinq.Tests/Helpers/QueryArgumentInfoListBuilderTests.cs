@@ -2,6 +2,7 @@
 using System.Linq;
 using FluentAssertions;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Builder;
+using GraphQL.EntityFrameworkCore.DynamicLinq.Enumerations;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Resolvers;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Utils.Types;
 using Moq;
@@ -9,13 +10,13 @@ using Xunit;
 
 namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Helpers
 {
-    public class QueryArgumentInfoHelperTests
+    public class QueryArgumentInfoListBuilderTests
     {
         private readonly Mock<IPropertyPathResolver> _propertyPathResolverMock;
 
         private readonly QueryArgumentInfoListBuilder _sut;
 
-        public QueryArgumentInfoHelperTests()
+        public QueryArgumentInfoListBuilderTests()
         {
             _propertyPathResolverMock = new Mock<IPropertyPathResolver>();
             _propertyPathResolverMock.Setup(pr => pr.Resolve(It.IsAny<Type>(), It.IsAny<string>(), It.IsAny<Type>()))
@@ -25,7 +26,7 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Helpers
         }
 
         [Fact]
-        public void PopulateQueryArgumentInfoList_With_GraphType_ReturnsCorrectQueryArgumentInfoList()
+        public void Build_With_GraphType_ReturnsCorrectQueryArgumentInfoList()
         {
             // Arrange
             _propertyPathResolverMock.Setup(pr => pr.Resolve(It.IsAny<Type>(), "Id", It.IsAny<Type>())).Returns("Idee");
@@ -34,17 +35,36 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Helpers
             var list = _sut.Build<GuestType>();
 
             // Assert
+            list.Count(q => q.QueryArgumentInfoType == QueryArgumentInfoType.DefaultGraphQL).Should().Be(3);
             list.Select(q => q.GraphQLPath).Should().BeEquivalentTo("Id", "Name", "RegisterDate");
             list.Select(q => q.EntityPath).Should().BeEquivalentTo("Idee", "Name", "RegisterDate");
         }
 
         [Fact]
-        public void PopulateQueryArgumentInfoList_With_GraphType_With_NestedGraphTypes_ReturnsCorrectQueryArgumentInfoList()
+        public void Build_With_GraphType_And_SupportOrderBy_ReturnsCorrectQueryArgumentInfoList()
+        {
+            // Arrange
+            _propertyPathResolverMock.Setup(pr => pr.Resolve(It.IsAny<Type>(), "Id", It.IsAny<Type>())).Returns("Idee");
+
+            // Act
+            var list = _sut.Build<GuestType>().SupportOrderBy();
+
+            // Assert
+            list.Count(q => q.QueryArgumentInfoType == QueryArgumentInfoType.DefaultGraphQL).Should().Be(3);
+            list.Count(q => q.QueryArgumentInfoType == QueryArgumentInfoType.OrderBy).Should().Be(1);
+            list.First(q => q.QueryArgumentInfoType == QueryArgumentInfoType.OrderBy).QueryArgument.Name.Should().Be("OrderBy");
+            list.Select(q => q.GraphQLPath).Should().BeEquivalentTo("Id", "Name", "RegisterDate", null);
+            list.Select(q => q.EntityPath).Should().BeEquivalentTo("Idee", "Name", "RegisterDate", null);
+        }
+
+        [Fact]
+        public void Build_With_GraphType_With_NestedGraphTypes_ReturnsCorrectQueryArgumentInfoList()
         {
             // Act
             var list = _sut.Build<ReservationType>();
 
             // Assert
+            list.Count(q => q.QueryArgumentInfoType == QueryArgumentInfoType.DefaultGraphQL).Should().Be(14);
             list.Select(q => q.GraphQLPath).Should().BeEquivalentTo(
                 "Id",
                 "CheckinDate",
