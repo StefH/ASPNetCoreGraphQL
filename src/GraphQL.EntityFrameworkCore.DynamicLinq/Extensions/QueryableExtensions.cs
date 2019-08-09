@@ -18,55 +18,107 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Extensions
         private const string SortOrderDesc = "desc";
         private static readonly Regex OrderByRegularExpression = new Regex(@"\w+", RegexOptions.Compiled);
 
+        private static bool IsSortOrder(string value) =>
+            value != null && (value.Equals(SortOrderAsc, StringComparison.OrdinalIgnoreCase) || value.Equals(SortOrderDesc, StringComparison.OrdinalIgnoreCase));
+
         [PublicAPI]
-        public static IQueryable<T> ApplyQueryArguments<T>([NotNull] this IQueryable<T> query, [NotNull] QueryArgumentInfoList list, [CanBeNull] Dictionary<string, object> arguments)
+        public static IQueryable<T> ApplyQueryArguments<T>([NotNull] this IQueryable<T> query, [NotNull] QueryArgumentInfoList list, [NotNull] ResolveFieldContext<T> context)
         {
             Guard.NotNull(query, nameof(query));
             Guard.HasNoNulls(list, nameof(list));
+            Guard.NotNull(context, nameof(context));
 
-            var orderByEntityPropertyPaths = new List<(string value, bool isEntityPath)>();
-            if (arguments != null)
+            if (context.Arguments == null)
             {
-                foreach (var argument in arguments)
+                return query;
+            }
+
+            var orderByItems = new List<(string value, QueryArgumentInfoType type, int relatedId)>();
+
+            foreach (var argument in context.Arguments)
+            {
+                if (TryGetOrderBy(argument.Key, argument.Value, list, context, out string orderByStatement))
                 {
-                    var filterQueryArgumentInfo = list.FirstOrDefault(i => i.QueryArgumentInfoType == QueryArgumentInfoType.DefaultGraphQL && i.QueryArgument.Name == argument.Key);
-                    if (filterQueryArgumentInfo != null)
-                    {
-                        query = query.Where(BuildPredicate(filterQueryArgumentInfo, argument.Value));
-                    }
-
-                    var orderByQueryArgumentInfo = list.FirstOrDefault(i => i.QueryArgumentInfoType == QueryArgumentInfoType.OrderBy && i.QueryArgument.Name == argument.Key);
-                    if (orderByQueryArgumentInfo != null && argument.Value is string orderByStatement)
-                    {
-                        foreach (Match match in OrderByRegularExpression.Matches(orderByStatement))
-                        {
-                            if (match.Value.Equals(SortOrderAsc, StringComparison.OrdinalIgnoreCase) || match.Value.Equals(SortOrderDesc, StringComparison.OrdinalIgnoreCase))
-                            {
-                                orderByEntityPropertyPaths.Add((match.Value.ToLower(), false));
-                            }
-
-                            var queryArgumentInfo = list.FirstOrDefault(l => match.Value.Equals(l.GraphQLPath, StringComparison.OrdinalIgnoreCase));
-                            if (queryArgumentInfo != null)
-                            {
-                                orderByEntityPropertyPaths.Add((queryArgumentInfo.EntityPath, true));
-                            }
-                        }
-                    }
+                    ApplyOrderBy(list, orderByItems, orderByStatement);
+                }
+                else
+                {
+                    var filterQueryArgumentInfo = GetEntityPath(argument.Key, list, context);
+                    query = query.Where(BuildPredicate(filterQueryArgumentInfo, argument.Value));
                 }
             }
 
-            if (orderByEntityPropertyPaths.Any())
+            if (orderByItems.Any())
             {
                 var stringBuilder = new StringBuilder();
-                foreach (var orderByEntityPropertyPath in orderByEntityPropertyPaths)
+                foreach (var orderByItem in orderByItems)
                 {
-                    stringBuilder.AppendFormat("{0}{1}", orderByEntityPropertyPath.isEntityPath ? ',' : ' ', orderByEntityPropertyPath.value);
+                    stringBuilder.AppendFormat("{0}{1}", orderByItem.type == QueryArgumentInfoType.DefaultGraphQL ? ',' : ' ', orderByItem.value);
                 }
 
                 query = query.OrderBy(stringBuilder.ToString().TrimStart(','));
             }
 
             return query;
+        }
+
+        private static void ApplyOrderBy(QueryArgumentInfoList list, List<(string value, QueryArgumentInfoType type, int relatedId)> orderByItems, string orderByStatement)
+        {
+            int index = 0;
+            foreach (Match match in OrderByRegularExpression.Matches(orderByStatement))
+            {
+                if (IsSortOrder(match.Value))
+                {
+                    int orderByIndex = index - 1;
+                    if (orderByItems.Count(o => o.type == QueryArgumentInfoType.DefaultGraphQL && o.relatedId == orderByIndex) == 0)
+                    {
+                        throw new ArgumentException($"The \"{QueryArgumentInfoType.OrderBy}\" field with value \"{match.Value}\" cannot be used without a query field.");
+                    }
+
+                    orderByItems.Add((match.Value.ToLower(), QueryArgumentInfoType.OrderBy, orderByIndex));
+                }
+                else
+                {
+                    var queryArgumentInfo = list.FirstOrDefault(l => match.Value.Equals(l.GraphQLPath, StringComparison.OrdinalIgnoreCase));
+                    if (queryArgumentInfo == null)
+                    {
+                        throw new ArgumentException($"The \"{QueryArgumentInfoType.OrderBy}\" field uses an unknown field \"{match.Value}\".");
+                    }
+
+                    orderByItems.Add((queryArgumentInfo.EntityPath, QueryArgumentInfoType.DefaultGraphQL, index));
+                }
+
+                index++;
+            }
+        }
+
+        private static QueryArgumentInfo GetEntityPath<T>(string argumentName, QueryArgumentInfoList list, ResolveFieldContext<T> context)
+        {
+            var queryArgumentInfo = list.FirstOrDefault(i => i.QueryArgumentInfoType == QueryArgumentInfoType.DefaultGraphQL && i.QueryArgument.Name == argumentName);
+            if (queryArgumentInfo != null)
+            {
+                return queryArgumentInfo;
+            }
+
+            throw new ArgumentException($"Unknown argument \"{argumentName}\" on field \"{context.FieldName}\" of type \"{context.Operation.Name}\"."); // todo
+        }
+
+        private static bool TryGetOrderBy<T>(string argumentName, object argumentValue, QueryArgumentInfoList list, ResolveFieldContext<T> context, out string orderByStatement)
+        {
+            orderByStatement = null;
+            var orderByQueryArgumentInfo = list.FirstOrDefault(i => i.QueryArgumentInfoType == QueryArgumentInfoType.OrderBy && i.QueryArgument.Name == argumentName);
+            if (orderByQueryArgumentInfo != null && argumentValue is string orderByAsString)
+            {
+                if (string.IsNullOrWhiteSpace(orderByAsString))
+                {
+                    throw new ArgumentException($"The \"{QueryArgumentInfoType.OrderBy}\" field is empty.");
+                }
+
+                orderByStatement = orderByAsString;
+                return true;
+            }
+
+            return false;
         }
 
         private static string BuildPredicate(QueryArgumentInfo info, object value)

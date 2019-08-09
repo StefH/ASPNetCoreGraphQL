@@ -66,25 +66,25 @@ namespace MyHotel.GraphQL
             Field<ListGraphType<RoomType>>("rooms",
                 arguments: new QueryArguments(roomQueryArgumentList.Select(q => q.QueryArgument)),
                 resolve: context => myHotelRepository.GetRoomsQuery()
-                    .ApplyQueryArguments(roomQueryArgumentList, context.Arguments)
+                    .ApplyQueryArguments(roomQueryArgumentList, context)
                     .ProjectTo<RoomModel>(mapper.ConfigurationProvider)
                     .ToList()
             );
 
-            var flatRoomQueryArgumentList = builder.Build<FlatRoomType>();
+            var flatRoomQueryArgumentList = builder.Build<FlatRoomType>().SupportOrderBy();
             Field<ListGraphType<FlatRoomType>>("flatrooms",
                 arguments: new QueryArguments(flatRoomQueryArgumentList.Select(q => q.QueryArgument)),
                 resolve: context => myHotelRepository.GetRoomsQuery()
-                    .ApplyQueryArguments(flatRoomQueryArgumentList, context.Arguments)
+                    .ApplyQueryArguments(flatRoomQueryArgumentList, context)
                     .ProjectTo<FlatRoomModel>(mapper.ConfigurationProvider)
                     .ToList()
             );
 
-            var reservationQueryArgumentList = builder.Build<ReservationType>();
+            var reservationQueryArgumentList = builder.Build<ReservationType>().SupportOrderBy();
             Field<ListGraphType<ReservationType>>("reservations",
                 arguments: new QueryArguments(reservationQueryArgumentList.Select(q => q.QueryArgument)),
                 resolve: context => myHotelRepository.GetReservationsQuery()
-                    .ApplyQueryArguments(reservationQueryArgumentList, context.Arguments)
+                    .ApplyQueryArguments(reservationQueryArgumentList, context)
                     .ProjectTo<ReservationModel>(mapper.ConfigurationProvider)
                     .ToList()
             );
