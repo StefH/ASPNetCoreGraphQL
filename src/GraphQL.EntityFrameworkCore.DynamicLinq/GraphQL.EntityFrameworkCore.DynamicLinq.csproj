@@ -4,8 +4,7 @@
     <AssemblyTitle>GraphQL.EntityFrameworkCore.DynamicLinq</AssemblyTitle>
     <Description>GraphQL EntityFrameworkCore Dynamic Linq extensions to query GraphQL types dynamically</Description>
     <PackageTags>GraphQL;entityframework;core;dynamiclinq</PackageTags>
-    <Version>1.0.0.0-preview00</Version>
-    <TargetFrameworks>netstandard2.0;net451</TargetFrameworks>
+    <TargetFrameworks>netstandard1.3;netstandard2.0;net451</TargetFrameworks>
     <Authors>Stef Heyenrath</Authors>
     <Copyright>Stef Heyenrath</Copyright>
     <PackageReleaseNotes>Bugfixes and new Features. For details see CHANGELOG.md</PackageReleaseNotes>

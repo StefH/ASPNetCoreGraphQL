@@ -11,6 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NHLStats.Data", "NHLStats.D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{231E7EC1-B4A9-4DB1-B21C-8D8ED136A1DC}"
 	ProjectSection(SolutionItems) = preProject
+		..\Directory.Build.props = ..\Directory.Build.props
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
@@ -40,7 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4B7EA302-B0F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQL.EntityFrameworkCore.DynamicLinq", "GraphQL.EntityFrameworkCore.DynamicLinq\GraphQL.EntityFrameworkCore.DynamicLinq.csproj", "{003C2B77-F413-4882-B904-2686C968392D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQL.EntityFrameworkCore.DynamicLinq.Tests", "GraphQL.EntityFrameworkCore.DynamicLinq.Tests\GraphQL.EntityFrameworkCore.DynamicLinq.Tests.csproj", "{F498C140-7A27-48AE-986B-5DFB56D4C167}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQL.EntityFrameworkCore.DynamicLinq.Tests", "GraphQL.EntityFrameworkCore.DynamicLinq.Tests\GraphQL.EntityFrameworkCore.DynamicLinq.Tests.csproj", "{F498C140-7A27-48AE-986B-5DFB56D4C167}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
