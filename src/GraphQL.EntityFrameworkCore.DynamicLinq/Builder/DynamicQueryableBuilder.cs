@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Enumerations;
@@ -146,12 +147,30 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Builder
 
         private string BuildPredicate(QueryArgumentInfo info, object value)
         {
+            if (info.IsNonNullGraphType)
+            {
+                return $"{info.EntityPath} == \"{value}\"";
+            }
+
             if (info.QueryArgument.Type == typeof(DateGraphType) && value is DateTime date)
             {
                 return $"np({info.EntityPath}) >= \"{date}\" && np({info.EntityPath}) < \"{date.AddDays(1)}\"";
             }
 
             return $"np({info.EntityPath}) == \"{value}\"";
+
+            //if (info.QueryArgument.Type == typeof(DateGraphType) && value is DateTime date)
+            //{
+            //    return $"np({info.EntityPath}) >= \"{date}\" && np({info.EntityPath}) < \"{date.AddDays(1)}\"";
+            //}
+
+            //return $"np({info.EntityPath}) == \"{value}\"";
+            //return $"{info.EntityPath} == \"{value}\"";
+        }
+
+        private class Workaround13860<T>
+        {
+            public T Value { get; set; }
         }
     }
 }

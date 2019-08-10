@@ -35,7 +35,8 @@ public class Room
 
 ## GraphQL
 
-With this library
+With this library you can use GraphQL queries like:
+
 
 
 

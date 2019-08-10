@@ -9,9 +9,14 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Extensions
 {
     internal static class TypeExtensions
     {
+        public static bool IsNonNullGraphType(this Type type)
+        {
+            return type.GetTypeInfo().BaseType == typeof(NonNullGraphType);
+        }
+
         public static Type GraphType(this Type type)
         {
-            return type.GetTypeInfo().BaseType == typeof(NonNullGraphType) ? type.GetGenericArguments().First() : type;
+            return type.IsNonNullGraphType() ? type.GetGenericArguments().First() : type;
         }
 
         public static bool IsObjectGraphType(this Type type)

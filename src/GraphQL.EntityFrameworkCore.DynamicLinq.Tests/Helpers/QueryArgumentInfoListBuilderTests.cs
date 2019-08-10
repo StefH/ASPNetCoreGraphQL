@@ -32,12 +32,46 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Helpers
             _propertyPathResolverMock.Setup(pr => pr.Resolve(It.IsAny<Type>(), "Id", It.IsAny<Type>())).Returns("Idee");
 
             // Act
+            var list = _sut.Build<RoomType>();
+
+            // Assert
+            list.Count(q => q.QueryArgumentInfoType == QueryArgumentInfoType.DefaultGraphQL).Should().Be(8);
+            list.Select(q => q.GraphQLPath).Should().BeEquivalentTo(
+                "Id",
+                "Name",
+                "Number",
+                "AllowedSmoking",
+                "Status",
+                "RoomDetailId",
+                "RoomDetailWindows",
+                "RoomDetailBeds"
+            );
+            list.Select(q => q.EntityPath).Should().BeEquivalentTo(
+                "Idee",
+                "Name",
+                "Number",
+                "AllowedSmoking",
+                "Status",
+                "RoomDetail.Idee",
+                "RoomDetail.Windows",
+                "RoomDetail.Beds"
+            );
+        }
+
+        [Fact]
+        public void Build_With_GraphType_With_Nullable_ReturnsCorrectQueryArgumentInfoList()
+        {
+            // Arrange
+            _propertyPathResolverMock.Setup(pr => pr.Resolve(It.IsAny<Type>(), "Id", It.IsAny<Type>())).Returns("Idee");
+
+            // Act
             var list = _sut.Build<GuestType>();
 
             // Assert
-            list.Count(q => q.QueryArgumentInfoType == QueryArgumentInfoType.DefaultGraphQL).Should().Be(3);
-            list.Select(q => q.GraphQLPath).Should().BeEquivalentTo("Id", "Name", "RegisterDate");
-            list.Select(q => q.EntityPath).Should().BeEquivalentTo("Idee", "Name", "RegisterDate");
+            list.Count(q => q.QueryArgumentInfoType == QueryArgumentInfoType.DefaultGraphQL).Should().Be(4);
+            list.Count(q => q.QueryArgumentInfoType == QueryArgumentInfoType.DefaultGraphQL && q.IsNonNullGraphType).Should().Be(3);
+            list.Select(q => q.GraphQLPath).Should().BeEquivalentTo("Id", "Name", "RegisterDate", "NullableInt");
+            list.Select(q => q.EntityPath).Should().BeEquivalentTo("Idee", "Name", "RegisterDate", "NullableInt");
         }
 
         [Fact]
@@ -50,11 +84,11 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Helpers
             var list = _sut.Build<GuestType>().SupportOrderBy();
 
             // Assert
-            list.Count(q => q.QueryArgumentInfoType == QueryArgumentInfoType.DefaultGraphQL).Should().Be(3);
+            list.Count(q => q.QueryArgumentInfoType == QueryArgumentInfoType.DefaultGraphQL).Should().Be(4);
             list.Count(q => q.QueryArgumentInfoType == QueryArgumentInfoType.OrderBy).Should().Be(1);
             list.First(q => q.QueryArgumentInfoType == QueryArgumentInfoType.OrderBy).QueryArgument.Name.Should().Be("OrderBy");
-            list.Select(q => q.GraphQLPath).Should().BeEquivalentTo("Id", "Name", "RegisterDate", null);
-            list.Select(q => q.EntityPath).Should().BeEquivalentTo("Idee", "Name", "RegisterDate", null);
+            list.Select(q => q.GraphQLPath).Should().BeEquivalentTo("Id", "Name", "RegisterDate", "NullableInt", null);
+            list.Select(q => q.EntityPath).Should().BeEquivalentTo("Idee", "Name", "RegisterDate", "NullableInt", null);
         }
 
         [Fact]
@@ -64,7 +98,7 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Helpers
             var list = _sut.Build<ReservationType>();
 
             // Assert
-            list.Count(q => q.QueryArgumentInfoType == QueryArgumentInfoType.DefaultGraphQL).Should().Be(14);
+            list.Count(q => q.QueryArgumentInfoType == QueryArgumentInfoType.DefaultGraphQL).Should().Be(15);
             list.Select(q => q.GraphQLPath).Should().BeEquivalentTo(
                 "Id",
                 "CheckinDate",
@@ -72,6 +106,7 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Helpers
                 "GuestId",
                 "GuestName",
                 "GuestRegisterDate",
+                "GuestNullableInt",
                 "RoomId",
                 "RoomName",
                 "RoomNumber",
@@ -88,13 +123,15 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Helpers
                 "Guest.Id",
                 "Guest.Name",
                 "Guest.RegisterDate",
+                "Guest.NullableInt",
                 "Room.Id",
                 "Room.Name",
                 "Room.Number",
                 "Room.AllowedSmoking",
                 "Room.Status",
                 "Room.RoomDetail.Id",
-                "Room.RoomDetail.Windows", "Room.RoomDetail.Beds"
+                "Room.RoomDetail.Windows",
+                "Room.RoomDetail.Beds"
             );
         }
     }

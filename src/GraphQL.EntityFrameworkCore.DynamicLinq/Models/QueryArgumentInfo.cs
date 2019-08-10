@@ -9,6 +9,8 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Models
 
         public QueryArgument QueryArgument { get; internal set; }
 
+        public bool IsNonNullGraphType { get; internal set; }
+
         public string GraphQLPath { get; internal set; }
 
         public string EntityPath { get; internal set; }

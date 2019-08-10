@@ -9,5 +9,7 @@ namespace MyHotel.Models
         public string Name { get; set; }
 
         public DateTime RegisterDate { get; set; }
+
+        public int? NullableInt { get; set; }
     }
 }

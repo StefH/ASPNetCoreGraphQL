@@ -14,15 +14,6 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Utils.Entities
 
         public DateTime RegisterDate { get; set; }
 
-        public Guest()
-        {
-            
-        }
-
-        public Guest(string name, DateTime registerDate)
-        {
-            Name = name;
-            RegisterDate = registerDate;
-        }
+        public int? NullableInt { get; set; }
     }
 }

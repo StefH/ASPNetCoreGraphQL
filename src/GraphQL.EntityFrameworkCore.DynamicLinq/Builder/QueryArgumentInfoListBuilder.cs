@@ -48,6 +48,7 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Builder
                 string resolvedParentEntityPath = _propertyPathResolver.Resolve(thisModel, ft.Name);
                 string entityPath = !string.IsNullOrEmpty(parentEntityPath) ? $"{parentEntityPath}.{resolvedParentEntityPath}" : resolvedParentEntityPath;
 
+                bool isNonNullGraphType = ft.Type.IsNonNullGraphType();
                 Type childGraphQLType = ft.Type.GraphType();
                 if (childGraphQLType.IsObjectGraphType())
                 {
@@ -60,6 +61,7 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Builder
                         QueryArgument = new QueryArgument(childGraphQLType) { Name = graphPath },
                         GraphQLPath = graphPath,
                         EntityPath = entityPath,
+                        IsNonNullGraphType = isNonNullGraphType,
                         QueryArgumentInfoType = QueryArgumentInfoType.DefaultGraphQL
                     });
                 }

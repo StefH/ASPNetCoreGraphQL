@@ -10,6 +10,7 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Utils.Types
             Field(x => x.Id);
             Field(x => x.Name);
             Field(x => x.RegisterDate);
+            Field(x => x.NullableInt, nullable: true);
         }
     }
 }

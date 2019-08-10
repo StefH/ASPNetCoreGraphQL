@@ -59,7 +59,7 @@ namespace MyHotel.GraphQL
                 arguments: new QueryArguments(roomQueryArgumentList.Select(q => q.QueryArgument)),
                 resolve: context => myHotelRepository
                     .GetRoomsQuery()
-                    .ApplyQueryArguments(roomQueryArgumentList, context.Arguments)
+                    .ApplyQueryArguments(roomQueryArgumentList, context)
                     .ToList()
             );
             
@@ -70,7 +70,7 @@ namespace MyHotel.GraphQL
                 {
                     return myHotelRepository
                         .GetReservationsQuery()
-                        .ApplyQueryArguments(reservationQueryArgumentList, context.Arguments)
+                        .ApplyQueryArguments(reservationQueryArgumentList, context)
                         .ToList();
                 });
 

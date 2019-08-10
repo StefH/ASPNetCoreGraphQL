@@ -62,6 +62,15 @@ namespace MyHotel.GraphQL
 
         public MyHotelQuery(MyHotelRepository myHotelRepository, IQueryArgumentInfoListBuilder builder, IMapper mapper)
         {
+            var guestQueryArgumentList = builder.Build<GuestType>().SupportOrderBy();
+            Field<ListGraphType<GuestType>>("guests",
+                arguments: new QueryArguments(guestQueryArgumentList.Select(q => q.QueryArgument)),
+                resolve: context => myHotelRepository.GetGuestsQuery()
+                    .ApplyQueryArguments(guestQueryArgumentList, context)
+                    .ProjectTo<GuestModel>(mapper.ConfigurationProvider)
+                    .ToList()
+            );
+
             var roomQueryArgumentList = builder.Build<RoomType>().SupportOrderBy().Exclude("Id");
             Field<ListGraphType<RoomType>>("rooms",
                 arguments: new QueryArguments(roomQueryArgumentList.Select(q => q.QueryArgument)),

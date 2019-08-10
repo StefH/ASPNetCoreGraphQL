@@ -45,5 +45,10 @@ namespace MyHotel.Repositories
             return _myHotelDbContext.Rooms
                 .Include(x => x.RoomDetail);
         }
+
+        public IQueryable<Guest> GetGuestsQuery()
+        {
+            return _myHotelDbContext.Guests;
+        }
     }
 }
