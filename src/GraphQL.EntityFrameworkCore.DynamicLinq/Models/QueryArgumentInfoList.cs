@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GraphQL.EntityFrameworkCore.DynamicLinq.Constants;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Enumerations;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Validation;
 using GraphQL.Types;
@@ -29,7 +30,11 @@ namespace GraphQL.EntityFrameworkCore.DynamicLinq.Models
             {
                 var orderBy = new QueryArgumentInfo
                 {
-                    QueryArgument = new QueryArgument(typeof(StringGraphType)) { Name = QueryArgumentInfoType.OrderBy.ToString() },
+                    QueryArgument = new QueryArgument(typeof(StringGraphType))
+                    {
+                        Name = FieldNames.OrderByFieldName,
+                        Description = "Sorts the elements of a sequence in ascending or descending order according to a key."
+                    },
                     QueryArgumentInfoType = QueryArgumentInfoType.OrderBy
                 };
 
