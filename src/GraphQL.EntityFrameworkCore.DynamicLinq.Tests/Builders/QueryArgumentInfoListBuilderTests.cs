@@ -8,7 +8,7 @@ using GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Utils.Types;
 using Moq;
 using Xunit;
 
-namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Helpers
+namespace GraphQL.EntityFrameworkCore.DynamicLinq.Tests.Builders
 {
     public class QueryArgumentInfoListBuilderTests
     {
