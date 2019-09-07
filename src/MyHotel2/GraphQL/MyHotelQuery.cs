@@ -5,7 +5,7 @@ using System.Security.Claims;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using GraphQL;
-using GraphQL.EntityFrameworkCore.DynamicLinq.Builder;
+using GraphQL.EntityFrameworkCore.DynamicLinq.Builders;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Extensions;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Resolvers;
 using GraphQL.Types;
@@ -19,47 +19,6 @@ namespace MyHotel.GraphQL
 {
     public class MyHotelQuery : ObjectGraphType
     {
-        private readonly IPropertyPathResolver _propertyPathResolver;
-
-        //private ICollection<QueryArgumentInfo> PopulateQueryArgumentInfoListOld(Type type, Type parentType = null, string graphPathPrefix = "", string entityPathPrefix = "")
-        //{
-        //    var list = new List<QueryArgumentInfo>();
-        //    if (!(Activator.CreateInstance(type) is IComplexGraphType complexGraphInstance))
-        //    {
-        //        return list;
-        //    }
-
-        //    complexGraphInstance.Fields.ToList().ForEach(ft =>
-        //    {
-        //        Type graphType = ft.Type.GraphType();
-        //        Type parentModel = parentType?.ModelType();
-
-        //        string resolvedParentEntityPath = _propertyPathResolver.Resolve(parentModel, graphPathPrefix);
-
-        //        string graphPath = $"{graphPathPrefix}{ft.Name}";
-        //        string entityPath = !string.IsNullOrEmpty(entityPathPrefix) ? $"{entityPathPrefix}.{resolvedParentEntityPath}" : resolvedParentEntityPath;
-
-        //        if (graphType.IsObjectGraphType())
-        //        {
-        //            list.AddRange(PopulateQueryArgumentInfoListOld(graphType, type, graphPath, entityPath));
-        //        }
-        //        else
-        //        {
-        //            Type thisModel = type.ModelType();
-        //            string resolvedPropertyName = _propertyPathResolver.Resolve(thisModel, ft.Name);
-
-        //            list.Add(new QueryArgumentInfo
-        //            {
-        //                QueryArgument = new QueryArgument(graphType) { Name = graphPath },
-        //                GraphPath = graphPath,
-        //                EntityPath = !string.IsNullOrEmpty(entityPath) ? $"{entityPath}.{resolvedPropertyName}" : resolvedPropertyName
-        //            });
-        //        }
-        //    });
-
-        //    return list;
-        //}
-
         public MyHotelQuery(MyHotelRepository myHotelRepository, IQueryArgumentInfoListBuilder builder, IMapper mapper)
         {
             var guestQueryArgumentList = builder.Build<GuestType>().SupportOrderBy();
