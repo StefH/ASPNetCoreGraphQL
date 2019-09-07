@@ -14,6 +14,8 @@ namespace MyHotel.EntityFrameworkCore.Entities
 
         public DateTime RegisterDate { get; set; }
 
+        public int? NullableInt { get; set; }
+
         public Guest()
         {
             

@@ -8,6 +8,7 @@ namespace MyHotel.GraphQL.Types
         public GuestType()
         {
             Field(x => x.Id);
+            Field(x => x.NullableInt, nullable: true);
             Field(x => x.Name);
             Field(x => x.RegisterDate);
         }
