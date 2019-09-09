@@ -53,7 +53,7 @@ namespace NHLStats.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseGraphiQl();
+            app.UseGraphiQl("/ui/graphiql", "/graphql");
             app.UseMvc();
             db.EnsureSeedData();
         }

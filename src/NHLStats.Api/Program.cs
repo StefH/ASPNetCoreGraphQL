@@ -7,11 +7,12 @@ namespace NHLStats.Api
 {
     public class Program
     {
-        private const string url = "http://localhost:5000/";
+        private const string url = "http://localhost:51111";
 
         public static void Main(string[] args)
         {
-            Console.WriteLine($"Access GraphiQL in-browser tool @ {url}graphql");
+            Console.WriteLine($"API runs @ {url}/graphql");
+            Console.WriteLine($"GraphiQL runs @ {url}/ui/graphiql");
             BuildWebHost(args).Run();
         }
 
