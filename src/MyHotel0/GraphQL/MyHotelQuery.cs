@@ -1,73 +1,20 @@
-﻿using GraphQL;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using GraphQL;
 using GraphQL.Types;
 using MyHotel.Entities;
-using MyHotel.Extensions;
 using MyHotel.GraphQL.Types;
 using MyHotel.Repositories;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 
 namespace MyHotel.GraphQL
 {
     public class MyHotelQuery : ObjectGraphType
     {
-        private ICollection<QueryArgumentInfo> PopulateQueryArgumentInfoList(Type type, string graphParentName = "", string parentEntityPath = "")
-        {
-            var list = new List<QueryArgumentInfo>();
-            if (!(Activator.CreateInstance(type) is IComplexGraphType complexGraphInstance))
-            {
-                return list;
-            }
-
-            complexGraphInstance.Fields.ToList().ForEach(ft =>
-            {
-                Type graphType = ft.Type.GraphType();
-                string resolvedParentPath = graphParentName;
-
-                string name = $"{graphParentName}{ft.Name}";
-                string entityPath = !string.IsNullOrEmpty(parentEntityPath) ? $"{parentEntityPath}.{resolvedParentPath}" : resolvedParentPath;
-
-                if (graphType.IsObjectGraphType())
-                {
-                    list.AddRange(PopulateQueryArgumentInfoList(graphType, name, entityPath));
-                }
-                else
-                {
-                    string resolvedPropertyName = ft.Name;
-
-                    list.Add(new QueryArgumentInfo
-                    {
-                        QueryArgument = new QueryArgument(graphType) { Name = name },
-                        GraphPropertyPath = name,
-                        EntityPropertyPath = !string.IsNullOrEmpty(entityPath) ? $"{entityPath}.{resolvedPropertyName}" : resolvedPropertyName
-                    });
-                }
-            });
-
-            return list;
-        }
-
         public MyHotelQuery(MyHotelRepository myHotelRepository)
         {
-            var roomQueryArgumentList = PopulateQueryArgumentInfoList(typeof(RoomType));
-            Field<ListGraphType<RoomType>>("rooms",
-                arguments: new QueryArguments(roomQueryArgumentList.Select(q => q.QueryArgument)),
-                resolve: context => myHotelRepository
-                    .GetRoomsQuery()
-                    .ToList()
-            );
-
-            var reservationQueryArgumentList = PopulateQueryArgumentInfoList(typeof(ReservationType));
             Field<ListGraphType<ReservationType>>("reservations",
-                arguments: new QueryArguments(reservationQueryArgumentList.Select(q => q.QueryArgument)),
-                resolve: context => myHotelRepository
-                    .GetReservationsQuery()
-                    .ToList());
-
-            Field<ListGraphType<ReservationType>>("reservations2",
                 arguments: new QueryArguments(new List<QueryArgument>
                 {
                     new QueryArgument<IdGraphType>
@@ -104,9 +51,6 @@ namespace MyHotel.GraphQL
                     var query = myHotelRepository.GetReservationsQuery().AsQueryable();
 
                     Console.WriteLine("context.Arguments = " + JsonConvert.SerializeObject(context.Arguments));
-
-                    var user = (ClaimsPrincipal)context.UserContext;
-                    var isUserAuthenticated = ((ClaimsIdentity)user.Identity).IsAuthenticated;
 
                     var reservationId = context.GetArgument<int?>("id");
                     if (reservationId.HasValue)

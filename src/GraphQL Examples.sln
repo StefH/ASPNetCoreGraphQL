@@ -19,9 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NHLStats", "NHLStats", "{46
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyHotel0", "MyHotel0", "{F7B572EE-4587-48B6-867E-25DB182E7A44}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHotel0", "MyHotel0\MyHotel0.csproj", "{D77B2748-58B5-460C-95DF-DF88ED4F54B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHotel0 (no dynamic + DB Entity)", "MyHotel0\MyHotel0 (no dynamic + DB Entity).csproj", "{D77B2748-58B5-460C-95DF-DF88ED4F54B8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHotel2", "MyHotel2\MyHotel2.csproj", "{935BB54E-8516-41C0-B3AF-4CD6550A4D9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHotel2 (dynamic + Mapper)", "MyHotel2\MyHotel2 (dynamic + Mapper).csproj", "{935BB54E-8516-41C0-B3AF-4CD6550A4D9E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyHotel2", "MyHotel2", "{5DA79724-DFA8-4AB7-8C06-0AD40A41C153}"
 EndProject
@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Azure.Functions.GraphQ
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyHotel1", "MyHotel1", "{ED4F7ED4-9CFD-43FD-9A94-C028C1CB010E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHotel1", "MyHotel1\MyHotel1.csproj", "{45F3A822-8F81-4716-BFBB-73161D459161}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHotel1 (dynamic + DB Entity)", "MyHotel1\MyHotel1 (dynamic + DB Entity).csproj", "{45F3A822-8F81-4716-BFBB-73161D459161}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authorization", "Authorization", "{BBC757BE-20B6-40C6-9E44-2C8F497AC8F6}"
 EndProject

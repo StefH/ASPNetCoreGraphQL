@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using GraphQL;
-using GraphQL.EntityFrameworkCore.DynamicLinq.Builder;
+using GraphQL.EntityFrameworkCore.DynamicLinq.Builders;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Extensions;
 using GraphQL.Types;
 using MyHotel.Entities;
@@ -15,43 +15,6 @@ namespace MyHotel.GraphQL
 {
     public class MyHotelQuery : ObjectGraphType
     {
-        //private ICollection<QueryArgumentInfo> PopulateQueryArgumentInfoList(Type type, Type parentType = null, string graphParentName = "", string parentEntityPath = "")
-        //{
-        //    var list = new List<QueryArgumentInfo>();
-        //    if (!(Activator.CreateInstance(type) is IComplexGraphType complexGraphInstance))
-        //    {
-        //        return list;
-        //    }
-
-        //    complexGraphInstance.Fields.ToList().ForEach(ft =>
-        //    {
-        //        Type graphType = ft.Type.GraphType();
-
-        //        string resolvedParentPath = graphParentName;
-
-        //        string name = $"{graphParentName}{ft.Name}";
-        //        string entityPath = !string.IsNullOrEmpty(parentEntityPath) ? $"{parentEntityPath}.{resolvedParentPath}" : resolvedParentPath;
-
-        //        if (graphType.IsObjectGraphType())
-        //        {
-        //            list.AddRange(PopulateQueryArgumentInfoList(graphType, type, name, entityPath));
-        //        }
-        //        else
-        //        {
-        //            string resolvedPropertyName = ft.Name;
-
-        //            list.Add(new QueryArgumentInfo
-        //            {
-        //                QueryArgument = new QueryArgument(graphType) { Name = name },
-        //                GraphPropertyPath = name,
-        //                EntityPropertyPath = !string.IsNullOrEmpty(entityPath) ? $"{entityPath}.{resolvedPropertyName}" : resolvedPropertyName
-        //            });
-        //        }
-        //    });
-
-        //    return list;
-        //}
-
         public MyHotelQuery(MyHotelRepository myHotelRepository, IQueryArgumentInfoListBuilder builder)
         {
             var roomQueryArgumentList = builder.Build<RoomType>();

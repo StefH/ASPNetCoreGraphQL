@@ -1,12 +1,7 @@
-﻿using GraphQL.Authorization;
-using GraphQL.Types;
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using GraphQL.Authorization;
+using GraphQL.Types;
 
 namespace GraphQLNet.Query
 {
@@ -37,16 +32,6 @@ namespace GraphQLNet.Query
                     return messages;
                 }
             ).AuthorizeWith("Authorized");
-        }
-
-        public byte[] ConvertToBytes(string fileName)
-        {
-            using (Stream stream = File.Open(fileName, FileMode.Open))
-            {
-                var bytes = new byte[stream.Length];
-                stream.Read(bytes, 0, (int)stream.Length);
-                return bytes;
-            }
         }
     }
 }

@@ -7,7 +7,6 @@ using AutoMapper.QueryableExtensions;
 using GraphQL;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Builders;
 using GraphQL.EntityFrameworkCore.DynamicLinq.Extensions;
-using GraphQL.EntityFrameworkCore.DynamicLinq.Resolvers;
 using GraphQL.Types;
 using MyHotel.EntityFrameworkCore.Entities;
 using MyHotel.GraphQL.Types;

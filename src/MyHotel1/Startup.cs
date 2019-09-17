@@ -14,8 +14,6 @@ using MyHotel.GraphQL;
 using MyHotel.GraphQL.Client;
 using MyHotel.Repositories;
 using System;
-using GraphQL.EntityFrameworkCore.DynamicLinq.DependencyInjection;
-
 
 namespace MyHotel
 {

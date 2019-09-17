@@ -1,15 +1,10 @@
-﻿using GraphQL.Authorization;
+﻿using System;
 using GraphQL.Server;
 using GraphQL.Validation;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GraphQLNet.Extensions
 {
