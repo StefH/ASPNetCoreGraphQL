@@ -1,8 +1,10 @@
 ﻿using GraphiQl;
 using GraphQL;
+using GraphQL.Server;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.WebSockets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +13,6 @@ using NHLStats.Api.Models;
 using NHLStats.Core.Data;
 using NHLStats.Data;
 using NHLStats.Data.Repositories;
-
 
 namespace NHLStats.Api
 {
@@ -34,13 +35,16 @@ namespace NHLStats.Api
             services.AddDbContext<NHLStatsContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:NHLStatsDb"]));
             services.AddTransient<IPlayerRepository, PlayerRepository>();
             services.AddTransient<ISkaterStatisticRepository, SkaterStatisticRepository>();
+
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<NHLStatsQuery>();
             services.AddSingleton<NHLStatsMutation>();
+            services.AddSingleton<NHLStatsSubscription>();
             services.AddSingleton<PlayerType>();
             services.AddSingleton<PlayerInputType>();
             services.AddSingleton<SkaterStatisticType>();
-
+            services.AddSingleton<INotifier, Notifier>();
+           
             var sp = services.BuildServiceProvider();
             services.AddSingleton<ISchema>(new NHLStatsSchema(new FuncDependencyResolver(type => sp.GetService(type))));
         }
@@ -53,6 +57,8 @@ namespace NHLStats.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseWebSockets();
+            app.UseGraphQLWebSockets<NHLStatsSchema>("/graphql");
             app.UseGraphiQl("/ui/graphiql", "/graphql");
             app.UseMvc();
             db.EnsureSeedData();

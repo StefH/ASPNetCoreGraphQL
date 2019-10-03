@@ -18,7 +18,11 @@ namespace NHLStats.Api.Models
                 resolve: context =>
                 {
                     var player = context.GetArgument<Player>("player");
-                    return contextServiceLocator.PlayerRepository.Add(player);
+                    var newPlayer = contextServiceLocator.PlayerRepository.Add(player);
+
+                    contextServiceLocator.Notifier.AddPlayer(player);
+
+                    return newPlayer;
                 });
         }
     }

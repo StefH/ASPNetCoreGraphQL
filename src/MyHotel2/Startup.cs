@@ -85,6 +85,7 @@ namespace MyHotel
                 .AddGraphTypes(ServiceLifetime.Scoped)
                 .AddUserContextBuilder(httpContext => httpContext.User)
                 .AddDataLoader()
+                .AddWebSockets()
                 .AddGraphQLAuthorization(options =>
                 {
                     options.AddPolicy("Authorized", p => p.RequireAuthenticatedUser());
@@ -119,6 +120,8 @@ namespace MyHotel
             app.UseCookiePolicy();
             app.UseAuthentication();
 
+            app.UseWebSockets();
+            app.UseGraphQLWebSockets<MyHotelSchema>("/graphql");
             app.UseGraphQL<MyHotelSchema>();
             app.UseGraphQLPlayground(new GraphQLPlaygroundOptions()); //to explorer API navigate https://*DOMAIN*/ui/playground
 

@@ -15,6 +15,7 @@
   <ItemGroup>
     <PackageReference Include="graphiql" Version="1.2.0" />
     <PackageReference Include="GraphQL" Version="2.4.0" />
+    <PackageReference Include="GraphQL.Server.Transports.WebSockets" Version="3.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.19" />
   </ItemGroup>
@@ -24,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GraphQL\GraphQLNet\GraphQLNet.csproj" />
     <ProjectReference Include="..\NHLStats.Core\NHLStats.Core.csproj" />
     <ProjectReference Include="..\NHLStats.Data\NHLStats.Data.csproj" />
   </ItemGroup>
