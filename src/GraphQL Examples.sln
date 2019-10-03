@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NHLStats.Api", "NHLStats.Api\NHLStats.Api.csproj", "{2988F8C6-0F4F-419B-911B-B69515A7800D}"
 EndProject
@@ -37,6 +37,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authorization", "Authorization", "{BBC757BE-20B6-40C6-9E44-2C8F497AC8F6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQLNet", "GraphQL\GraphQLNet\GraphQLNet.csproj", "{CC914DF2-0811-4AA0-8C43-C5BB304CEF8D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyHotel3", "MyHotel3", "{999E6847-11DB-4BA2-A206-2C05B44C35CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHotel3 (subscriptions)", "MyHotel3\MyHotel3 (subscriptions).csproj", "{402A392D-97E7-4306-850E-F248230BB102}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +80,10 @@ Global
 		{CC914DF2-0811-4AA0-8C43-C5BB304CEF8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC914DF2-0811-4AA0-8C43-C5BB304CEF8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC914DF2-0811-4AA0-8C43-C5BB304CEF8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{402A392D-97E7-4306-850E-F248230BB102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{402A392D-97E7-4306-850E-F248230BB102}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{402A392D-97E7-4306-850E-F248230BB102}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{402A392D-97E7-4306-850E-F248230BB102}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +97,7 @@ Global
 		{0BD47B35-FFA9-489C-9092-EC81D4AA9E4E} = {FE922B0D-16F3-45AC-BB0B-C449A6233A69}
 		{45F3A822-8F81-4716-BFBB-73161D459161} = {ED4F7ED4-9CFD-43FD-9A94-C028C1CB010E}
 		{CC914DF2-0811-4AA0-8C43-C5BB304CEF8D} = {BBC757BE-20B6-40C6-9E44-2C8F497AC8F6}
+		{402A392D-97E7-4306-850E-F248230BB102} = {999E6847-11DB-4BA2-A206-2C05B44C35CA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C9F3067-8D49-47A5-B5D1-5C7FA8527166}
