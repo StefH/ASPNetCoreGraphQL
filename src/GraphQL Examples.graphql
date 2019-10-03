@@ -1,0 +1,28 @@
+# POST Request
+mutation CreateReviewForEpisode($ep: Episode!, $review: ReviewInput!) {
+  createReview(episode: $ep, review: $review) {
+    id
+    stars
+    commentary
+  }
+}
+
+# Variables
+{
+  "ep": "JEDI",
+  "review": {
+    "stars": 5,
+    "commentary": "This is a great movie!"
+  }
+}
+
+# Result
+{
+  "data": {
+    "createReview": {
+      "id": 12345,
+      "stars": 5,
+      "commentary": "This is a great movie!"
+    }
+  }
+}
