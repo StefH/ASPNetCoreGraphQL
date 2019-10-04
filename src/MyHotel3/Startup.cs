@@ -42,15 +42,12 @@ namespace MyHotel
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            //***< My services >*** 
             services.AddHttpClient<ReservationHttpGraphqlClient>(x => x.BaseAddress = new Uri(Configuration["GraphQlEndpoint"]));
             services.AddSingleton(t => new GraphQLClient(Configuration["GraphQlEndpoint"]));
             services.AddSingleton<ReservationGraphqlClient>();
 
             services.AddGraphQLEntityFrameworkCoreDynamicLinq();
             services.AddScoped<IPropertyPathResolver, AutoMapperPropertyPathResolver>();
-            
-            //***</ My services >*** 
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -59,10 +56,8 @@ namespace MyHotel
             });
 
             services.AddDbContext<MyHotelDbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:MyHotelDb"]));
-
             services.AddTransient<MyHotelRepository>();
 
-            //***< GraphQL Services >***
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -79,9 +74,7 @@ namespace MyHotel
             services.AddScoped<IDependencyResolver>(x => new FuncDependencyResolver(x.GetRequiredService));
 
             services.AddScoped<MyHotelSchema>();
-            //services.AddScoped<MyHotelQuery>();
-            //services.AddScoped<MyHotelSubscription>();
-            services.AddScoped<INotifier, Notifier>();
+            services.AddSingleton<INotifier, Notifier>();
 
             services.AddGraphQL(x =>
                 {
@@ -100,8 +93,6 @@ namespace MyHotel
                     //options.AddPolicy("Authorized", p => p.RequireClaim(ClaimTypes.Name, "Tom"));
                 });
             //.AddUserContextBuilder(context => new GraphQLUserContext { User = context.User });
-
-            //***</ GraphQL Services >*** 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

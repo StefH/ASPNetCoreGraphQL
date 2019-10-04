@@ -8,6 +8,7 @@ namespace MyHotel.GraphQL
         public MyHotelSchema(IDependencyResolver resolver) : base(resolver)
         {
             Query = resolver.Resolve<MyHotelQuery>();
+            Mutation = resolver.Resolve<MyHotelMutation>();
             Subscription = resolver.Resolve<MyHotelSubscription>();
         }
     }

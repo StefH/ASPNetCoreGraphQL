@@ -6,10 +6,10 @@ namespace MyHotel.Services
 {
     public interface INotifier
     {
-        ConcurrentStack<GuestModel> AllGuests { get; }
+        // ConcurrentStack<GuestModel> AllGuests { get; }
 
         IObservable<GuestModel> Guest();
 
-        void AddGuest(GuestModel player);
+        void AddGuest(GuestModel guest);
     }
 }

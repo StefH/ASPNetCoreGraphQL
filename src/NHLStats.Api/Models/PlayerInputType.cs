@@ -1,6 +1,4 @@
-﻿ 
-
-using GraphQL.Types;
+﻿using GraphQL.Types;
 
 namespace NHLStats.Api.Models
 {

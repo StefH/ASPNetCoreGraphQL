@@ -50,5 +50,13 @@ namespace MyHotel.Repositories
         {
             return _myHotelDbContext.Guests;
         }
+
+        public Guest AddGuest(Guest guest)
+        {
+            _myHotelDbContext.Guests.Add(guest);
+            _myHotelDbContext.SaveChanges();
+
+            return guest;
+        }
     }
 }
