@@ -1,5 +1,5 @@
 query {
-  reservations(roomAllowedSmoking: true, roomRoomDetailBeds: 2) {
+  reservations(roomAllowedSmoking: false) {
     checkinDate
     guest {
       name
@@ -16,15 +16,20 @@ query {
   }
 }
 
-
 query {
-  rooms {
-    name
-    number
-    status
-    roomDetail {
-      beds
-      windows
+  reservations(roomStatus: AVAILABLE) {
+    checkinDate
+    guest {
+      name
+    }
+    room {
+      name
+      number
+      status
+      roomDetail {
+        beds
+        windows
+      }
     }
   }
 }

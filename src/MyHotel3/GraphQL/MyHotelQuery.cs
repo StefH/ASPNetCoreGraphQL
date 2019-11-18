@@ -22,7 +22,7 @@ namespace MyHotel.GraphQL
         {
             var guestQueryArgumentList = builder.Build<GuestType>().SupportOrderBy();
             Field<ListGraphType<GuestType>>("guests",
-                arguments: new QueryArguments(guestQueryArgumentList.Select(q => q.QueryArgument)),
+                arguments: guestQueryArgumentList.ToQueryArguments(),
                 resolve: context => myHotelRepository.GetGuestsQuery()
                     .ApplyQueryArguments(guestQueryArgumentList, context)
                     .ProjectTo<GuestModel>(mapper.ConfigurationProvider)
@@ -31,7 +31,7 @@ namespace MyHotel.GraphQL
 
             var roomQueryArgumentList = builder.Build<RoomType>().SupportOrderBy().Exclude("Id");
             Field<ListGraphType<RoomType>>("rooms",
-                arguments: new QueryArguments(roomQueryArgumentList.Select(q => q.QueryArgument)),
+                arguments: roomQueryArgumentList.ToQueryArguments(),
                 resolve: context => myHotelRepository.GetRoomsQuery()
                     .ApplyQueryArguments(roomQueryArgumentList, context)
                     .ProjectTo<RoomModel>(mapper.ConfigurationProvider)
@@ -40,7 +40,7 @@ namespace MyHotel.GraphQL
 
             var flatRoomQueryArgumentList = builder.Build<FlatRoomType>().SupportOrderBy();
             Field<ListGraphType<FlatRoomType>>("flatrooms",
-                arguments: new QueryArguments(flatRoomQueryArgumentList.Select(q => q.QueryArgument)),
+                arguments: flatRoomQueryArgumentList.ToQueryArguments(),
                 resolve: context => myHotelRepository.GetRoomsQuery()
                     .ApplyQueryArguments(flatRoomQueryArgumentList, context)
                     .ProjectTo<FlatRoomModel>(mapper.ConfigurationProvider)
@@ -49,7 +49,7 @@ namespace MyHotel.GraphQL
 
             var reservationQueryArgumentList = builder.Build<ReservationType>().SupportOrderBy();
             Field<ListGraphType<ReservationType>>("reservations",
-                arguments: new QueryArguments(reservationQueryArgumentList.Select(q => q.QueryArgument)),
+                arguments: reservationQueryArgumentList.ToQueryArguments(),
                 resolve: context => myHotelRepository.GetReservationsQuery()
                     .ApplyQueryArguments(reservationQueryArgumentList, context)
                     .ProjectTo<ReservationModel>(mapper.ConfigurationProvider)

@@ -18,7 +18,7 @@ query {
 
 
 query {
-  reservations(checkinDate: "2019-08-01") {
+  reservations(checkinDate: "2019-08-08") {
     checkinDate
     guest {
       name
@@ -63,6 +63,7 @@ query {
   }
 }
 
+
 query {
   flatrooms(beds: 2) {
     name
@@ -73,3 +74,13 @@ query {
   }
 }
 
+
+query {
+  flatrooms(beds: 2, orderBy: "name") {
+    name
+    number
+    status
+    beds
+    windows
+  }
+}

@@ -1,5 +1,6 @@
 using GraphQL;
 using GraphQL.Client;
+using GraphQL.EntityFrameworkCore.DynamicLinq.DependencyInjection;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using Microsoft.AspNetCore.Builder;
